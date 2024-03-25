@@ -1,4 +1,4 @@
-package com.hobak.happnesSQL.config;
+package com.hobak.happinessql.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
