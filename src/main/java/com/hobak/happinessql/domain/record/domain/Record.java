@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Getter
 @Entity
@@ -28,17 +27,18 @@ public class Record extends BaseTimeEntity {
     @Column(nullable = true)
     private String memo;
 
+    @Column(nullable = true)
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
-    private RecordImage recordImage;
-
     @Builder
-    public Record(int recordId, int happiness, String memo) {
+    public Record(int recordId, int happiness, String memo, String imgUrl) {
         this.recordId = recordId;
         this.happiness = happiness;
         this.memo = memo;
+        this.imgUrl = imgUrl;
     }
 }
