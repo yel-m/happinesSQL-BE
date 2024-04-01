@@ -30,6 +30,9 @@ public class Record extends BaseTimeEntity {
     @Column(nullable = true)
     private String imgUrl;
 
+    @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
+    private Location Location;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
