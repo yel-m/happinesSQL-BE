@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.activity.domain;
 
+import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.database.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -27,6 +28,9 @@ public class Activity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+    @OneToOne
+    @JoinColumn(name = "record_id", nullable = false)
+    private Record record;
 
     @Builder
     public Activity(int activityId, String name, Category category) {
