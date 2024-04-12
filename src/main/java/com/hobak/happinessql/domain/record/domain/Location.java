@@ -1,6 +1,5 @@
 package com.hobak.happinessql.domain.record.domain;
 
-import com.hobak.happinessql.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
