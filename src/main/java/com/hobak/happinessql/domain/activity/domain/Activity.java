@@ -20,7 +20,7 @@ public class Activity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "activity_id")
-    private int activityId;
+    private Long activityId;
 
     @Column(nullable = false)
     private String name;
@@ -33,7 +33,7 @@ public class Activity extends BaseTimeEntity {
     private Record record;
 
     @Builder
-    public Activity(int activityId, String name, Category category) {
+    public Activity(Long activityId, String name, Category category) {
         this.activityId = activityId;
         this.name = name;
         this.category = category;

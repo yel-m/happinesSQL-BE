@@ -1,6 +1,5 @@
 package com.hobak.happinessql.domain.record.domain;
 
-import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.database.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -19,7 +18,7 @@ public class Record extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "record_id")
-    private int recordId;
+    private Long recordId;
 
     @Column(nullable = false)
     private int happiness;
@@ -32,19 +31,19 @@ public class Record extends BaseTimeEntity {
     private String imgUrl;
 
     @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
-    private Location Location;
+    private RecordImg recordImg;
+
+    @OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
+    private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
-    private Activity activity;
     @Builder
-    public Record(int recordId, int happiness, String memo, String imgUrl) {
+    public Record(Long recordId, int happiness, String memo) {
         this.recordId = recordId;
         this.happiness = happiness;
         this.memo = memo;
-        this.imgUrl = imgUrl;
     }
 }
