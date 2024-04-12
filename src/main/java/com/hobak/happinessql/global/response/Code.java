@@ -19,17 +19,23 @@ public enum Code {
     // ex) 이상은이 닉네임 중복 에러코드를 만든다면
     // USER_NICKNAME_DUPLICATED(11010, HttpStatus.BAD_REQUEST, "User nickname duplicated"),
 
+    // Common
     OK(0, HttpStatus.OK, "Ok"),
 
     BAD_REQUEST(10000, HttpStatus.BAD_REQUEST, "Bad request"),
     VALIDATION_ERROR(10001, HttpStatus.BAD_REQUEST, "Validation error"),
-    NOT_FOUND(10002, HttpStatus.NOT_FOUND, "Requested resource is not found"),
+    ENTITY_NOT_FOUND(404, HttpStatus.NOT_FOUND, " Entity Not Found"),
+    METHOD_NOT_ALLOWED(10004, HttpStatus.METHOD_NOT_ALLOWED, "대상 리소스가 이 메서드를 지원하지 않습니다."),
 
-    INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
-    DATA_ACCESS_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error"),
+    INTERNAL_ERROR(10005, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
+    DATA_ACCESS_ERROR(10006, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error"),
 
-    UNAUTHORIZED(40000, HttpStatus.UNAUTHORIZED, "User unauthorized");
+    // User
+    UNAUTHORIZED(30000, HttpStatus.UNAUTHORIZED, "User unauthorized"),
 
+
+    // Record
+    RECORD_NOT_FOUND(40000, HttpStatus.NOT_FOUND, "존재하지 않는 행복 기록입니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
