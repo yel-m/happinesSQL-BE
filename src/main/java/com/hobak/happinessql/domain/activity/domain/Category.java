@@ -17,7 +17,7 @@ public class Category extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private int categoryId;
+    private Long categoryId;
 
     @Column(nullable = false)
     private String name;
@@ -26,7 +26,7 @@ public class Category extends BaseTimeEntity {
     private List<Activity> activities;
 
     @Builder
-    public Category(int categoryId, String name, List<Activity> activities) {
+    public Category(Long categoryId, String name, List<Activity> activities) {
         this.categoryId = categoryId;
         this.name = name;
         this.activities = activities;
