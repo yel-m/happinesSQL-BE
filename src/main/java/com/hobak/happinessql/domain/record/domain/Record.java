@@ -18,7 +18,7 @@ public class Record extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "record_id")
-    private int recordId;
+    private Long recordId;
 
     @Column(nullable = false)
     private int happiness;
@@ -30,15 +30,20 @@ public class Record extends BaseTimeEntity {
     @Column(nullable = true)
     private String imgUrl;
 
+    @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
+    private RecordImg recordImg;
+
+    @OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
+    private Location location;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public Record(int recordId, int happiness, String memo, String imgUrl) {
+    public Record(Long recordId, int happiness, String memo) {
         this.recordId = recordId;
         this.happiness = happiness;
         this.memo = memo;
-        this.imgUrl = imgUrl;
     }
 }
