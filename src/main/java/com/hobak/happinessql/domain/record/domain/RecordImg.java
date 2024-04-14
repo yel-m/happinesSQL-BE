@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "record_image")
+@Table(name = "record_img")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecordImg extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "record_ima_id")
+    @Column(name = "record_img_id")
     private Long recordImgId;
 
     @Column(nullable = true)
@@ -26,8 +26,8 @@ public class RecordImg extends BaseTimeEntity {
     private Record record;
 
     @Builder
-    public RecordImg(Long recordImgId, String url) {
-        this.recordImgId = recordImgId;
+    public RecordImg(String url, Record record) {
         this.url = url;
+        this.record = record;
     }
 }
