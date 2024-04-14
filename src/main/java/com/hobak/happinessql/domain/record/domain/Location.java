@@ -36,17 +36,17 @@ public class Location {
     private Double yPos;
 
     @OneToOne
-    @JoinColumn(name = "record_id")
+    @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
     @Builder
-    public Location(Long locationId, String fullName, String country, String city, String district, Double xPos, Double yPos) {
-        this.locationId = locationId;
+    public Location(String fullName, String country, String city, String district, Double xPos, Double yPos, Record record) {
         this.fullName = fullName;
         this.country = country;
         this.city = city;
         this.district = district;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.record = record;
     }
 }
