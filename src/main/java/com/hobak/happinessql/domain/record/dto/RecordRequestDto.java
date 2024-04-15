@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.record.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class RecordRequestDto {
 
     @NotNull
-    private Long activity_id;
+    @JsonProperty("activity_id")
+    private Long activityId;
 
     @NotNull
     private int happiness;
@@ -18,7 +20,8 @@ public class RecordRequestDto {
     private String memo;
 
     @NotNull
-    private String full_name;
+    @JsonProperty("full_name")
+    private String fullName;
 
     @NotNull
     private String country;
@@ -30,8 +33,10 @@ public class RecordRequestDto {
     private String district;
 
     @NotNull
-    private Double x_pos;
+    @JsonProperty("x_pos")
+    private Double xPos;
 
     @NotNull
-    private Double y_pos;
+    @JsonProperty("y_pos")
+    private Double yPos;
 }

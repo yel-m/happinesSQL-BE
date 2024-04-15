@@ -39,8 +39,8 @@ public class RecordCreationService {
         User user = userFindService.findUserById(userId);
 
         // 활동 찾기
-        Activity activity = activityRepository.findById(recordRequestDto.getActivity_id())
-                .orElseThrow(() -> new ActivityNotFoundException("Activity with ID " + recordRequestDto.getActivity_id()));
+        Activity activity = activityRepository.findById(recordRequestDto.getActivityId())
+                .orElseThrow(() -> new ActivityNotFoundException("Activity with ID " + recordRequestDto.getActivityId()));
 
         // 기록 생성
         Record record = RecordConverter.toRecord(recordRequestDto, user, activity);

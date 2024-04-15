@@ -19,12 +19,12 @@ public class RecordConverter {
 
     public static Location toLocation(RecordRequestDto recordRequestDto, Record record) {
         return Location.builder()
-                .fullName(recordRequestDto.getFull_name())
+                .fullName(recordRequestDto.getFullName())
                 .city(recordRequestDto.getCity())
                 .country(recordRequestDto.getCountry())
                 .district(recordRequestDto.getDistrict())
-                .xPos(recordRequestDto.getX_pos())
-                .yPos(recordRequestDto.getY_pos())
+                .xPos(recordRequestDto.getXPos())
+                .yPos(recordRequestDto.getYPos())
                 .record(record)
                 .build();
     }
