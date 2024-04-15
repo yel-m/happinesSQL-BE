@@ -2,7 +2,7 @@ package com.hobak.happinessql.domain.user.application;
 
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.exception.UserNotFoundException;
-import com.hobak.happinessql.domain.user.repository.UserRespository;
+import com.hobak.happinessql.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserFindService {
 
-    private final UserRespository userRespository;
+    private final UserRepository userRespository;
 
     public User findUserById(Long userId) {
         return userRespository.findById(userId)
