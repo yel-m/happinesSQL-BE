@@ -22,6 +22,9 @@ public class User extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -31,14 +34,15 @@ public class User extends BaseTimeEntity {
     private String gender;
 
     @Column(nullable = false)
-    private String age;
+    private int age;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Record> records;
 
 
     @Builder
-    public User(String name, String password, String gender, String age) {
+    public User(String username, String name, String password, String gender, int age) {
+        this.username = username;
         this.name = name;
         this.password = password;
         this.gender = gender;

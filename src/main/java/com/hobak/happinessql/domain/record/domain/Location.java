@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.record.domain;
 
+import com.hobak.happinessql.global.infra.database.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "location")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Location {
+public class Location extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,17 +37,17 @@ public class Location {
     private Double yPos;
 
     @OneToOne
-    @JoinColumn(name = "record_id")
+    @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
     @Builder
-    public Location(Long locationId, String fullName, String country, String city, String district, Double xPos, Double yPos) {
-        this.locationId = locationId;
+    public Location(String fullName, String country, String city, String district, Double xPos, Double yPos, Record record) {
         this.fullName = fullName;
         this.country = country;
         this.city = city;
         this.district = district;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.record = record;
     }
 }
