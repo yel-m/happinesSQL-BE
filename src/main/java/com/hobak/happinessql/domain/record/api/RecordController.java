@@ -3,8 +3,9 @@ package com.hobak.happinessql.domain.record.api;
 
 import com.hobak.happinessql.domain.record.application.RecordCreationService;
 import com.hobak.happinessql.domain.record.dto.RecordRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
-import com.hobak.happinessql.domain.user.repository.UserRespository;
+import com.hobak.happinessql.domain.user.repository.UserRepository;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecordController {
 
     private final RecordCreationService recordService;
-    private final UserRespository userRespository;
+    private final UserRepository userRepository;
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public DataResponseDto<String> createRecord(
+    public DataResponseDto<Object> createRecord(
         @Valid @RequestPart(value="content") RecordRequestDto recordRequestDto,
         @RequestPart(required = false) MultipartFile img
         ) {
@@ -37,12 +38,15 @@ public class RecordController {
                 .age(22)
                 .gender("여")
                 .build();
-        User newUser = userRespository.save(user);
-        System.out.println(newUser.getUserId());
+        User newUser = userRepository.save(user);
+        System.out.println("userId : " + newUser.getUserId());
 
-        recordService.createRecord(1L, recordRequestDto, img);
+        Long recordId = recordService.createRecord(newUser.getUserId(), recordRequestDto, img);
+        RecordResponseDto recordResponseDto = RecordResponseDto.builder()
+                .recordId(recordId)
+                .build();
 
-        return DataResponseDto.of("행복 기록이 저장되었습니다.");
+        return DataResponseDto.of(recordResponseDto, "행복 기록이 저장되었습니다.");
     }
 
 

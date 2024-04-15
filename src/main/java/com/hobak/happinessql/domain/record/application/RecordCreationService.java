@@ -33,7 +33,7 @@ public class RecordCreationService {
 
 
     @Transactional
-    public void createRecord(Long userId, RecordRequestDto recordRequestDto, MultipartFile img) {
+    public Long createRecord(Long userId, RecordRequestDto recordRequestDto, MultipartFile img) {
 
         // 사용자 찾기
         User user = userFindService.findUserById(userId);
@@ -59,6 +59,8 @@ public class RecordCreationService {
                     .build();
             recordImgRepository.save(recordImg);
         }
+        // 생성된 Record의 ID 반환
+        return newRecord.getRecordId();
     }
 
 
