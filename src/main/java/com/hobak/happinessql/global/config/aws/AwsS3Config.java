@@ -1,4 +1,4 @@
-package com.hobak.happinessql.global.config;
+package com.hobak.happinessql.global.config.aws;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
