@@ -29,7 +29,6 @@ public class RecordController {
 
         // TODO: 임시값 : 로그인 / 로그아웃 구현 시 수정
         // 한 번 실행 시 임시 유저가 만들어지므로 1회 실행 후에는 이 부분은 주석 처리하고 실행하면 됩니다.
-        System.out.println("뭔데");
         System.out.println(recordRequestDto.getMemo());
         User user = User.builder()
                 .username("hobak")
