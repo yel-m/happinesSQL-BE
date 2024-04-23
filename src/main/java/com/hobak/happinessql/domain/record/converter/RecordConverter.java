@@ -3,9 +3,12 @@ package com.hobak.happinessql.domain.record.converter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
-import com.hobak.happinessql.domain.record.dto.RecordRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecordConverter {
 
@@ -31,4 +34,20 @@ public class RecordConverter {
     }
 
 
+    public static List<RecordResponseDto> toRecordResponseDtos(List<Record> records) {
+        List<RecordResponseDto> recordResponseDtos = new ArrayList<>();
+        for(Record record: records) {
+            String imgUrl = record.getRecordImg() != null ? record.getRecordImg().getUrl() : null;
+            RecordResponseDto recordResponseDto = RecordResponseDto.builder()
+                    .recordId(record.getRecordId())
+                    .date(record.getCreatedAt())
+                    .memo(record.getMemo())
+                    .happiness(record.getHappiness())
+                    .imgUrl(imgUrl)
+                    .build();
+
+            recordResponseDtos.add(recordResponseDto);
+        }
+        return recordResponseDtos;
+    }
 }
