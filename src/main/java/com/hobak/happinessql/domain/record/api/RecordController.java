@@ -2,7 +2,8 @@ package com.hobak.happinessql.domain.record.api;
 
 
 import com.hobak.happinessql.domain.record.application.RecordCreationService;
-import com.hobak.happinessql.domain.record.dto.RecordRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreationResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.repository.UserRepository;
@@ -24,8 +25,8 @@ public class RecordController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public DataResponseDto<Object> createRecord(
-        @Valid @RequestPart(value="content") RecordRequestDto recordRequestDto,
-        @RequestPart(required = false) MultipartFile img
+            @Valid @RequestPart(value="content") RecordCreationRequestDto recordCreationRequestDto,
+            @RequestPart(required = false) MultipartFile img
         ) {
 
         // TODO: 임시값 : 로그인 / 로그아웃 구현 시 수정

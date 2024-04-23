@@ -33,7 +33,7 @@ public class RecordCreationService {
 
 
     @Transactional
-    public Long createRecord(Long userId, RecordRequestDto recordRequestDto, MultipartFile img) {
+    public Long createRecord(Long userId, RecordCreationRequestDto recordRequestDto, MultipartFile img) {
 
         // 사용자 찾기
         User user = userFindService.findUserById(userId);
