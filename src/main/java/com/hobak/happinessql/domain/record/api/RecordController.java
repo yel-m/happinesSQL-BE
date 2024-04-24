@@ -2,10 +2,10 @@ package com.hobak.happinessql.domain.record.api;
 
 
 import com.hobak.happinessql.domain.record.application.RecordCreationService;
+import com.hobak.happinessql.domain.record.converter.RecordConverter;
 import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreationResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
-import com.hobak.happinessql.domain.record.repository.RecordRepository;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.repository.UserRepository;
 import com.hobak.happinessql.global.response.DataResponseDto;
@@ -46,9 +46,7 @@ public class RecordController {
         System.out.println("userId : " + newUser.getUserId());
 
         Long recordId = recordService.createRecord(newUser.getUserId(), recordCreationRequestDto, img);
-        RecordCreationResponseDto recordCreationResponseDto = RecordCreationResponseDto.builder()
-                .recordId(recordId)
-                .build();
+        RecordCreationResponseDto recordCreationResponseDto = RecordConverter.toRecordCreationResponseDto(recordId);
 
         return DataResponseDto.of(recordCreationResponseDto, "행복 기록이 저장되었습니다.");
     }

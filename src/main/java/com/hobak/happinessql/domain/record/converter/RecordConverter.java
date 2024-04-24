@@ -4,6 +4,7 @@ import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreationResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 
@@ -49,5 +50,12 @@ public class RecordConverter {
             recordResponseDtos.add(recordResponseDto);
         }
         return recordResponseDtos;
+    }
+
+    public static RecordCreationResponseDto toRecordCreationResponseDto(Long recordId) {
+        return RecordCreationResponseDto
+                .builder()
+                .recordId(recordId)
+                .build();
     }
 }
