@@ -3,12 +3,16 @@ package com.hobak.happinessql.domain.record.converter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
-import com.hobak.happinessql.domain.record.dto.RecordRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecordConverter {
 
-    public static Record toRecord(RecordRequestDto recordRequestDto, User user, Activity activity) {
+    public static Record toRecord(RecordCreationRequestDto recordRequestDto, User user, Activity activity) {
         return Record.builder()
                 .happiness(recordRequestDto.getHappiness())
                 .memo(recordRequestDto.getMemo())
@@ -17,7 +21,7 @@ public class RecordConverter {
                 .build();
     }
 
-    public static Location toLocation(RecordRequestDto recordRequestDto, Record record) {
+    public static Location toLocation(RecordCreationRequestDto recordRequestDto, Record record) {
         return Location.builder()
                 .fullName(recordRequestDto.getFullName())
                 .city(recordRequestDto.getCity())
@@ -30,4 +34,20 @@ public class RecordConverter {
     }
 
 
+    public static List<RecordResponseDto> toRecordResponseDtos(List<Record> records) {
+        List<RecordResponseDto> recordResponseDtos = new ArrayList<>();
+        for(Record record: records) {
+            String imgUrl = record.getRecordImg() != null ? record.getRecordImg().getUrl() : null;
+            RecordResponseDto recordResponseDto = RecordResponseDto.builder()
+                    .recordId(record.getRecordId())
+                    .date(record.getCreatedAt())
+                    .memo(record.getMemo())
+                    .happiness(record.getHappiness())
+                    .imgUrl(imgUrl)
+                    .build();
+
+            recordResponseDtos.add(recordResponseDto);
+        }
+        return recordResponseDtos;
+    }
 }

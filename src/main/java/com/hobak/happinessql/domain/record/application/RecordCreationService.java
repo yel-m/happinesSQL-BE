@@ -7,7 +7,8 @@ import com.hobak.happinessql.domain.record.converter.RecordConverter;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.domain.RecordImg;
-import com.hobak.happinessql.domain.record.dto.RecordRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.record.repository.LocationRepository;
 import com.hobak.happinessql.domain.record.repository.RecordImgRepository;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
@@ -16,8 +17,12 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.s3.AwsS3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +38,7 @@ public class RecordCreationService {
 
 
     @Transactional
-    public Long createRecord(Long userId, RecordRequestDto recordRequestDto, MultipartFile img) {
+    public Long createRecord(Long userId, RecordCreationRequestDto recordRequestDto, MultipartFile img) {
 
         // 사용자 찾기
         User user = userFindService.findUserById(userId);
@@ -63,7 +68,14 @@ public class RecordCreationService {
         return newRecord.getRecordId();
     }
 
+    public List<RecordResponseDto> fetchRecordPagesBy(Long lastRecordId, int size, Long userId) {
+        User user = userFindService.findUserById(userId);
+        Page<Record> records = fetchPages(lastRecordId, size, user);
+        return RecordConverter.toRecordResponseDtos(records.getContent());
+    }
 
-
-
+    private Page<Record> fetchPages(Long lastRecordId, int size, User user) {
+        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
+        return recordRepository.findByRecordIdLessThanAndUserOrderByRecordIdDesc(lastRecordId, user, pageRequest); // JPA 쿼리 메서드
+    }
 }

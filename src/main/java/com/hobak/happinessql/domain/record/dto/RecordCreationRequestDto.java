@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecordRequestDto {
+public class RecordCreationRequestDto {
 
     @NotNull
     @JsonProperty("activity_id")
