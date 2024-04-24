@@ -30,8 +30,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String gender;
+    private Gender gender;
 
     @Column(nullable = false)
     private int age;
@@ -41,7 +42,7 @@ public class User extends BaseTimeEntity {
 
 
     @Builder
-    public User(String username, String name, String password, String gender, int age) {
+    public User(String username, String name, String password, Gender gender, int age) {
         this.username = username;
         this.name = name;
         this.password = password;
