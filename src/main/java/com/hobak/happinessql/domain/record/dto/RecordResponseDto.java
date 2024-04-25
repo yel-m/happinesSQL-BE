@@ -23,6 +23,7 @@ public class RecordResponseDto {
 
     private String memo;
 
+    @JsonProperty("img_url")
     private String imgUrl;
 
     private int happiness;

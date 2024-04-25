@@ -2,10 +2,11 @@ package com.hobak.happinessql.domain.record.api;
 
 
 import com.hobak.happinessql.domain.record.application.RecordCreationService;
+import com.hobak.happinessql.domain.record.converter.RecordConverter;
 import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreationResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
-import com.hobak.happinessql.domain.record.repository.RecordRepository;
+import com.hobak.happinessql.domain.user.domain.Gender;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.repository.UserRepository;
 import com.hobak.happinessql.global.response.DataResponseDto;
@@ -40,15 +41,13 @@ public class RecordController {
                 .password("happy")
                 .name("사그미")
                 .age(22)
-                .gender("여")
+                .gender(Gender.FEMALE)
                 .build();
         User newUser = userRepository.save(user);
         System.out.println("userId : " + newUser.getUserId());
 
         Long recordId = recordService.createRecord(newUser.getUserId(), recordCreationRequestDto, img);
-        RecordCreationResponseDto recordCreationResponseDto = RecordCreationResponseDto.builder()
-                .recordId(recordId)
-                .build();
+        RecordCreationResponseDto recordCreationResponseDto = RecordConverter.toRecordCreationResponseDto(recordId);
 
         return DataResponseDto.of(recordCreationResponseDto, "행복 기록이 저장되었습니다.");
     }
@@ -57,7 +56,6 @@ public class RecordController {
     public DataResponseDto<Object> getRecordList(@RequestParam Long lastRecordId, @RequestParam int size) {
         // TODO : 임시값 -> 로그인한 유저의 id를 찾아내는 로직으로 변경
         Long userId = 1L;
-
         List<RecordResponseDto> recordResponseDtos = recordService.fetchRecordPagesBy(lastRecordId, size, userId);
         return DataResponseDto.of(recordResponseDtos, "행복 기록을 성공적으로 조회했습니다.");
     }
