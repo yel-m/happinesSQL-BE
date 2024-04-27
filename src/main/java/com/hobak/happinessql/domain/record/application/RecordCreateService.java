@@ -16,8 +16,6 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.s3.AwsS3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,14 +65,5 @@ public class RecordCreateService {
         return newRecord.getRecordId();
     }
 
-    public List<RecordResponseDto> fetchRecordPagesBy(Long lastRecordId, int size, Long userId) {
-        User user = userFindService.findUserById(userId);
-        Page<Record> records = fetchPages(lastRecordId, size, user);
-        return RecordConverter.toRecordResponseDtos(records.getContent());
-    }
 
-    private Page<Record> fetchPages(Long lastRecordId, int size, User user) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return recordRepository.findByRecordIdLessThanAndUserOrderByRecordIdDesc(lastRecordId, user, pageRequest); // JPA 쿼리 메서드
-    }
 }
