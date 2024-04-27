@@ -3,8 +3,8 @@ package com.hobak.happinessql.domain.record.converter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
-import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
-import com.hobak.happinessql.domain.record.dto.RecordCreationResponseDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreateResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RecordConverter {
 
-    public static Record toRecord(RecordCreationRequestDto recordRequestDto, User user, Activity activity) {
+    public static Record toRecord(RecordCreateRequestDto recordRequestDto, User user, Activity activity) {
         return Record.builder()
                 .happiness(recordRequestDto.getHappiness())
                 .memo(recordRequestDto.getMemo())
@@ -22,7 +22,7 @@ public class RecordConverter {
                 .build();
     }
 
-    public static Location toLocation(RecordCreationRequestDto recordRequestDto, Record record) {
+    public static Location toLocation(RecordCreateRequestDto recordRequestDto, Record record) {
         return Location.builder()
                 .fullName(recordRequestDto.getFullName())
                 .city(recordRequestDto.getCity())
@@ -52,8 +52,8 @@ public class RecordConverter {
         return recordResponseDtos;
     }
 
-    public static RecordCreationResponseDto toRecordCreationResponseDto(Long recordId) {
-        return RecordCreationResponseDto
+    public static RecordCreateResponseDto toRecordCreateResponseDto(Long recordId) {
+        return RecordCreateResponseDto
                 .builder()
                 .recordId(recordId)
                 .build();
