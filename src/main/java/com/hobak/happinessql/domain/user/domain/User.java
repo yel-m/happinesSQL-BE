@@ -1,6 +1,7 @@
 package com.hobak.happinessql.domain.user.domain;
 
 import com.hobak.happinessql.domain.record.domain.Record;
+import com.hobak.happinessql.domain.user.dto.UserProfileUpdateRequestDto;
 import com.hobak.happinessql.global.infra.database.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -48,5 +49,11 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.gender = gender;
         this.age = age;
+    }
+
+
+    public void updateUserProfile(UserProfileUpdateRequestDto requestDto) {
+        this.gender = requestDto.getGender();
+        this.age = requestDto.getAge();
     }
 }
