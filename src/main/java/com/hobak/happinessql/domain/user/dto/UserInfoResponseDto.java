@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserInfoResponseDto {
+
+    private Long userId;
+
     private String name;
 
     private Gender gender;
@@ -17,7 +20,8 @@ public class UserInfoResponseDto {
     private int age;
 
     @Builder
-    public UserInfoResponseDto(String name, Gender gender, int age) {
+    public UserInfoResponseDto(Long userId, String name, Gender gender, int age) {
+        this.userId = userId;
         this.name = name;
         this.gender = gender;
         this.age = age;
