@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecordCreationResponseDto {
+public class RecordCreateResponseDto {
 
     @JsonProperty("record_id")
     private Long recordId;
 
     @Builder
-    public RecordCreationResponseDto(Long recordId) {
+    public RecordCreateResponseDto(Long recordId) {
         this.recordId = recordId;
     }
 }

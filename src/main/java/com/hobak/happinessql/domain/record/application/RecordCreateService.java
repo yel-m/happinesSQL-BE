@@ -7,8 +7,7 @@ import com.hobak.happinessql.domain.record.converter.RecordConverter;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.domain.RecordImg;
-import com.hobak.happinessql.domain.record.dto.RecordCreationRequestDto;
-import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
+import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
 import com.hobak.happinessql.domain.record.repository.LocationRepository;
 import com.hobak.happinessql.domain.record.repository.RecordImgRepository;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
@@ -17,16 +16,12 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.s3.AwsS3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class RecordCreationService {
+public class RecordCreateService {
 
     private final RecordRepository recordRepository;
     private final RecordImgRepository recordImgRepository;
@@ -38,21 +33,21 @@ public class RecordCreationService {
 
 
     @Transactional
-    public Long createRecord(Long userId, RecordCreationRequestDto recordRequestDto, MultipartFile img) {
+    public Long createRecord(Long userId, RecordCreateRequestDto requestDto, MultipartFile img) {
 
         // 사용자 찾기
         User user = userFindService.findUserById(userId);
 
         // 활동 찾기
-        Activity activity = activityRepository.findById(recordRequestDto.getActivityId())
-                .orElseThrow(() -> new ActivityNotFoundException("Activity with ID " + recordRequestDto.getActivityId()));
+        Activity activity = activityRepository.findById(requestDto.getActivityId())
+                .orElseThrow(() -> new ActivityNotFoundException("Activity with ID " + requestDto.getActivityId()));
 
         // 기록 생성
-        Record record = RecordConverter.toRecord(recordRequestDto, user, activity);
+        Record record = RecordConverter.toRecord(requestDto, user, activity);
         Record newRecord = recordRepository.save(record);
 
         // 위치 저장
-        Location location = RecordConverter.toLocation(recordRequestDto, newRecord);
+        Location location = RecordConverter.toLocation(requestDto, newRecord);
         locationRepository.save(location);
 
         // 이미지 업로드
@@ -68,14 +63,5 @@ public class RecordCreationService {
         return newRecord.getRecordId();
     }
 
-    public List<RecordResponseDto> fetchRecordPagesBy(Long lastRecordId, int size, Long userId) {
-        User user = userFindService.findUserById(userId);
-        Page<Record> records = fetchPages(lastRecordId, size, user);
-        return RecordConverter.toRecordResponseDtos(records.getContent());
-    }
 
-    private Page<Record> fetchPages(Long lastRecordId, int size, User user) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return recordRepository.findByRecordIdLessThanAndUserOrderByRecordIdDesc(lastRecordId, user, pageRequest); // JPA 쿼리 메서드
-    }
 }
