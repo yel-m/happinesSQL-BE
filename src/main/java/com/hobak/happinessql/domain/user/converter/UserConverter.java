@@ -6,6 +6,7 @@ import com.hobak.happinessql.domain.user.dto.UserInfoResponseDto;
 public class UserConverter {
     public static UserInfoResponseDto toUserInfoResponseDto(User user) {
         return UserInfoResponseDto.builder()
+                .userId(user.getUserId())
                 .name(user.getName())
                 .age(user.getAge())
                 .gender(user.getGender())
