@@ -13,9 +13,10 @@ public class ActivityConverter {
         return ActivityDto.builder()
                 .id(activity.getActivityId())
                 .name(activity.getName())
-                .emoji(activity.getEmoji()) // 이 부분 추가
+                .emoji(activity.getEmoji())
                 .build();
     }
+
 
     public static List<ActivityDto> toActivityDtoList(List<Activity> activities) {
         return activities.stream()
@@ -23,10 +24,11 @@ public class ActivityConverter {
                 .collect(Collectors.toList());
     }
 
-    public static CategoryDto toCategoryDto(Category category) {
+    public static CategoryDto toCategoryDto(Category category,  List<ActivityDto> activityDtos) {
         return CategoryDto.builder()
                 .id(category.getCategoryId())
                 .name(category.getName())
+                .activities(activityDtos)
                 .build();
     }
 

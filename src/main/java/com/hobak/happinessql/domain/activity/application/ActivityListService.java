@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.activity.application;
 
+import com.hobak.happinessql.domain.activity.converter.ActivityConverter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.activity.domain.Category;
 import com.hobak.happinessql.domain.activity.dto.ActivityListResponseDto;
@@ -35,11 +36,7 @@ public class ActivityListService {
         Page<Category> categories = fetchCategoryPages(lastCategoryId, size);
         for (Category category : categories.getContent()) {
             List<ActivityDto> activityDtos = fetchActivityDtosByCategory(category, user);
-            CategoryDto categoryDto = CategoryDto.builder()
-                    .id(category.getCategoryId())
-                    .name(category.getName())
-                    .activities(activityDtos)
-                    .build();
+            CategoryDto categoryDto = ActivityConverter.toCategoryDto(category, activityDtos);
             categoryDtos.add(categoryDto);
 
             if (activityDtos.size() < size) {
@@ -63,11 +60,7 @@ public class ActivityListService {
     private List<ActivityDto> fetchActivityDtosByCategory(Category category, User user) {
         List<Activity> activities = activityRepository.findByCategory(category);
         return activities.stream()
-                .map(activity -> ActivityDto.builder()
-                        .id(activity.getActivityId())
-                        .name(activity.getName())
-                        .emoji(activity.getEmoji())
-                        .build())
+                .map(activity -> ActivityConverter.toActivityDto(activity))
                 .collect(Collectors.toList());
     }
 }
