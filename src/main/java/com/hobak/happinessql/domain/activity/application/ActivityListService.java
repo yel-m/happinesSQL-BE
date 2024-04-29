@@ -61,7 +61,7 @@ public class ActivityListService {
     }
 
     private List<ActivityDto> fetchActivityDtosByCategory(Category category, User user) {
-        List<Activity> activities = activityRepository.findByCategoryAndUser(category, user);
+        List<Activity> activities = activityRepository.findByCategory(category);
         return activities.stream()
                 .map(activity -> ActivityDto.builder()
                         .id(activity.getActivityId())

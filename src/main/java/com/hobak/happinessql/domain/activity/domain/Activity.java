@@ -1,7 +1,6 @@
 package com.hobak.happinessql.domain.activity.domain;
 
 import com.hobak.happinessql.domain.record.domain.Record;
-import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.infra.database.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -28,12 +27,8 @@ public class Activity extends BaseTimeEntity {
     @Column
     private String emoji;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    //@OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    //private List<Record> records;
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Record> records;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
