@@ -25,11 +25,15 @@ public class Category extends BaseTimeEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Activity> activities;
 
+    @Column(nullable = true)
+    private Long userId;
+
     @Builder
-    public Category(Long categoryId, String name, List<Activity> activities) {
+    public Category(Long categoryId, String name, List<Activity> activities, Long userId) {
         this.categoryId = categoryId;
         this.name = name;
         this.activities = activities;
+        this.userId = userId;
     }
 }
 
