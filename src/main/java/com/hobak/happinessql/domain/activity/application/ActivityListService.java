@@ -11,8 +11,6 @@ import com.hobak.happinessql.domain.activity.repository.CategoryRepository;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,32 +27,20 @@ public class ActivityListService {
     private final CategoryRepository categoryRepository;
     private final UserFindService userFindService;
 
-    public ActivityListResponseDto getActivities(Long lastCategoryId, int size, Long userId) {
+    public ActivityListResponseDto getActivitiesByUserId(Long userId) {
         User user = userFindService.findUserById(userId);
         List<CategoryDto> categoryDtos = new ArrayList<>();
 
-        Page<Category> categories = fetchCategoryPages(lastCategoryId, size);
-        for (Category category : categories.getContent()) {
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
             List<ActivityDto> activityDtos = fetchActivityDtosByCategory(category, user);
             CategoryDto categoryDto = ActivityConverter.toCategoryDto(category, activityDtos);
             categoryDtos.add(categoryDto);
-
-            if (activityDtos.size() < size) {
-                lastCategoryId = category.getCategoryId();
-                size -= activityDtos.size();
-            } else {
-                break;
-            }
         }
 
         return ActivityListResponseDto.builder()
                 .categories(categoryDtos)
                 .build();
-    }
-
-    private Page<Category> fetchCategoryPages(Long lastCategoryId, int size) {
-        PageRequest pageRequest = PageRequest.of(0, size);
-        return categoryRepository.findByCategoryIdGreaterThanOrderByCategoryIdAsc(lastCategoryId, pageRequest);
     }
 
     private List<ActivityDto> fetchActivityDtosByCategory(Category category, User user) {

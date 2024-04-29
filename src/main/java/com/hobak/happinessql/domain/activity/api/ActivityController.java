@@ -17,11 +17,8 @@ public class ActivityController {
     private final ActivityListService activityListService;
 
     @GetMapping
-    public DataResponseDto<Object> getActivities(
-            @RequestParam(value = "lastCategoryId", defaultValue = "0") Long lastCategoryId,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "userId") Long userId) {
-        ActivityListResponseDto response = activityListService.getActivities(lastCategoryId, size, userId);
-        return DataResponseDto.of(response, "활동 목록을 성공적으로 조회했습니다.");
+    public DataResponseDto<ActivityListResponseDto> getActivitiesByUserId(@RequestParam Long userId) {
+        ActivityListResponseDto response = activityListService.getActivitiesByUserId(userId);
+        return DataResponseDto.of(response, "사용자의 모든 카테고리별 활동을 성공적으로 조회했습니다.");
     }
 }
