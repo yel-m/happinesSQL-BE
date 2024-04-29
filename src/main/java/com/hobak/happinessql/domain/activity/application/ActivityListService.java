@@ -8,8 +8,6 @@ import com.hobak.happinessql.domain.activity.dto.ActivityDto;
 import com.hobak.happinessql.domain.activity.dto.CategoryDto;
 import com.hobak.happinessql.domain.activity.repository.ActivityRepository;
 import com.hobak.happinessql.domain.activity.repository.CategoryRepository;
-import com.hobak.happinessql.domain.user.domain.User;
-import com.hobak.happinessql.domain.user.application.UserFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,25 +23,26 @@ public class ActivityListService {
 
     private final ActivityRepository activityRepository;
     private final CategoryRepository categoryRepository;
-    private final UserFindService userFindService;
 
     public ActivityListResponseDto getActivitiesByUserId(Long userId) {
-        User user = userFindService.findUserById(userId);
         List<CategoryDto> categoryDtos = new ArrayList<>();
 
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findByUserIdIsNull();
         for (Category category : categories) {
-            List<ActivityDto> activityDtos = fetchActivityDtosByCategory(category, user);
+            List<ActivityDto> activityDtos = fetchActivityDtosByCategory(category);
             CategoryDto categoryDto = ActivityConverter.toCategoryDto(category, activityDtos);
             categoryDtos.add(categoryDto);
         }
-
+        Category ectCategory = categoryRepository.findByUserId(userId);
+        List<ActivityDto> ectActivities = fetchActivityDtosByCategory(ectCategory);
+        CategoryDto categoryDto2 = ActivityConverter.toCategoryDto(ectCategory, ectActivities);
+        categoryDtos.add(categoryDto2);
         return ActivityListResponseDto.builder()
                 .categories(categoryDtos)
                 .build();
     }
 
-    private List<ActivityDto> fetchActivityDtosByCategory(Category category, User user) {
+    private List<ActivityDto> fetchActivityDtosByCategory(Category category) {
         List<Activity> activities = activityRepository.findByCategory(category);
         return activities.stream()
                 .map(activity -> ActivityConverter.toActivityDto(activity))
