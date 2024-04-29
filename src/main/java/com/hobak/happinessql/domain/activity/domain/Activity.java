@@ -24,7 +24,10 @@ public class Activity extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Column
+    private String emoji;
+
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Record> records;
 
     @ManyToOne(fetch = FetchType.LAZY)
