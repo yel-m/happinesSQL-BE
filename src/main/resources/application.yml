@@ -36,6 +36,6 @@ cloud:
     region:
       static: ap-northeast-2 # 버킷 리전
     s3:
-      bucket: happinessql # 버킷 이름
+      bucket: i-want-to-be-happy # 버킷 이름
     stack:
       auto: false
