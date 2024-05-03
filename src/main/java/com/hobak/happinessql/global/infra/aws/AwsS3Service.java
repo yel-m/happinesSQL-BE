@@ -1,4 +1,4 @@
-package com.hobak.happinessql.global.infra.s3;
+package com.hobak.happinessql.global.infra.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
