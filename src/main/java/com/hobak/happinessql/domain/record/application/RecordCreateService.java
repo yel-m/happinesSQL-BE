@@ -13,7 +13,7 @@ import com.hobak.happinessql.domain.record.repository.RecordImgRepository;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.domain.User;
-import com.hobak.happinessql.global.infra.s3.AwsS3Service;
+import com.hobak.happinessql.global.infra.aws.AwsS3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
