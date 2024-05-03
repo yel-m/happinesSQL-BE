@@ -8,7 +8,7 @@ spring:
   # JPA
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_HOST}
+    url: ${DB_HOST} # TODO: 나중에 환경변수 DB_URL로 변경
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
