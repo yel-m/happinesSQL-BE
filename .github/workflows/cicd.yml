@@ -1,5 +1,5 @@
 # 1. 워크 플로 이름 지정
-name: HappinesSQL
+name: HappinesSQL CI/CD
 
 # 2. 워크플로가 시작될 조건 지정
 on:
