@@ -7,6 +7,10 @@ on:
     types: [ closed ]
   workflow_dispatch:
 
+env:
+  S3_BUCKET_NAME: happinessql-deploy
+  PROJECT_NAME: happinessql
+
 jobs:
   build:
     runs-on: ubuntu-latest # 3. 실행 환경 지정
@@ -53,23 +57,16 @@ jobs:
         run: echo "CurrentTime=$"
         shell: bash # 확보한 시간 보여주기
 
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
-          cp Procfile deploy/Procfile
-          cp -r .ebextensions deploy/.ebextensions
-          cp -r .platform deploy/.platform
-          cd deploy && zip -r deploy.zip .
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
 
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: happinessql-dev
-          environment_name: Happinessql-dev-env
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
-          region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
-          wait_for_deployment: false
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
