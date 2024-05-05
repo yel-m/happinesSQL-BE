@@ -3,14 +3,20 @@ name: HappinesSQL CI/CD
 
 # 2. 워크플로가 시작될 조건 지정
 on:
+  push:
+    branches:  [ develop ]
   pull_request:
-    types: [ closed ]
-  workflow_dispatch:
+    branches: [ develop ]
+  # workflow_dispatch:
+
+env:
+  S3_BUCKET_NAME: happinessql-deploy
+  PROJECT_NAME: happinessql
 
 jobs:
   build:
     runs-on: ubuntu-latest # 3. 실행 환경 지정
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
+    # if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
 
     # 4. 실행 스텝 지정
     steps:
@@ -27,17 +33,6 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash # 권한 부여
 
-      - name: Set Environment
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./src/main/resources/application.yml
-        env:
-          cloud.aws.credentials.access-key: ${{ secrets.AWS_S3_ACCESS_KEY }}
-          cloud.aws.credentials.secret-key: ${{ secrets.AWS_S3_SECRET_KEY }}
-          spring.datasource.url: ${{ secrets.DB_URL }}
-          spring.datasource.username: ${{ secrets.DB_USER }}
-          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         shell: bash # build 시작
@@ -53,23 +48,16 @@ jobs:
         run: echo "CurrentTime=$"
         shell: bash # 확보한 시간 보여주기
 
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
-          cp Procfile deploy/Procfile
-          cp -r .ebextensions deploy/.ebextensions
-          cp -r .platform deploy/.platform
-          cd deploy && zip -r deploy.zip .
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
 
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: happinessql-dev
-          environment_name: Happinessql-dev-env
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
-          region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
-          wait_for_deployment: false
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
