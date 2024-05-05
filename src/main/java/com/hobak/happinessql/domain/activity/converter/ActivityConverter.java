@@ -2,6 +2,7 @@ package com.hobak.happinessql.domain.activity.converter;
 
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.activity.domain.Category;
+import com.hobak.happinessql.domain.activity.dto.ActivityCreateResponseDto;
 import com.hobak.happinessql.domain.activity.dto.ActivityDto;
 import com.hobak.happinessql.domain.activity.dto.CategoryDto;
 
@@ -32,11 +33,9 @@ public class ActivityConverter {
                 .build();
     }
 
-    public static CategoryDto toCategoryDtoWithActivities(Category category, List<Activity> activities) {
-        return CategoryDto.builder()
-                .id(category.getCategoryId())
-                .name(category.getName())
-                .activities(toActivityDtoList(activities))
+    public static ActivityCreateResponseDto toActivityCreateResponseDto(Long activityId){
+        return ActivityCreateResponseDto.builder()
+                .activityId(activityId)
                 .build();
     }
 }
