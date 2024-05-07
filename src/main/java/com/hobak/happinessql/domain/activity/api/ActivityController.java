@@ -1,10 +1,7 @@
 package com.hobak.happinessql.domain.activity.api;
 
-import com.hobak.happinessql.domain.activity.application.ActivityCreateService;
-import com.hobak.happinessql.domain.activity.application.ActivityDeleteService;
-import com.hobak.happinessql.domain.activity.application.ActivityUpdateService;
+import com.hobak.happinessql.domain.activity.application.*;
 import com.hobak.happinessql.domain.activity.dto.*;
-import com.hobak.happinessql.domain.activity.application.ActivityListService;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +15,7 @@ public class ActivityController {
     private final ActivityCreateService activityCreateService;
     private final ActivityDeleteService activityDeleteService;
     private final ActivityUpdateService activityUpdateService;
+    private final ActivitySearchService activitySearchService;
     @GetMapping
     public DataResponseDto<ActivityListResponseDto> getActivitiesByUserId(@RequestParam Long userId) {
         ActivityListResponseDto response = activityListService.getActivitiesByUserId(userId);
@@ -37,5 +35,10 @@ public class ActivityController {
     public DataResponseDto<ActivityUpdateResponseDto> updateActicity(@PathVariable Long activityId, @RequestBody ActivityUpdateRequestDto requestDto){
         ActivityUpdateResponseDto responseDto = activityUpdateService.updateActivity(activityId,requestDto);
         return DataResponseDto.of(responseDto,"활동을 성공적으로 수정했습니다.");
+    }
+    @PostMapping("/search")
+    public DataResponseDto<ActivitySearchResponseDto> searchActivities(@RequestBody ActivitySearchRequestDto requestDto, @RequestParam Long userId) {
+        ActivitySearchResponseDto responseDto = activitySearchService.searchActivities(requestDto.getSearch(), userId);
+        return DataResponseDto.of(responseDto, "활동을 성공적으로 검색했습니다.");
     }
 }
