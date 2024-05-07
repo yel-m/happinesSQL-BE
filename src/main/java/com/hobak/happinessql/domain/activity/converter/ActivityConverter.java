@@ -4,6 +4,7 @@ import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.activity.domain.Category;
 import com.hobak.happinessql.domain.activity.dto.ActivityCreateResponseDto;
 import com.hobak.happinessql.domain.activity.dto.ActivityDto;
+import com.hobak.happinessql.domain.activity.dto.ActivityUpdateResponseDto;
 import com.hobak.happinessql.domain.activity.dto.CategoryDto;
 
 import java.util.List;
@@ -36,6 +37,14 @@ public class ActivityConverter {
     public static ActivityCreateResponseDto toActivityCreateResponseDto(Long activityId){
         return ActivityCreateResponseDto.builder()
                 .activityId(activityId)
+                .build();
+    }
+    public static ActivityUpdateResponseDto toActivityUpdateResponseDto(Activity activity){
+        return ActivityUpdateResponseDto.builder()
+                .categoryId(activity.getCategory().getCategoryId())
+                .categoryName(activity.getCategory().getName())
+                .activityId(activity.getActivityId())
+                .activityName(activity.getName())
                 .build();
     }
 }
