@@ -2,9 +2,8 @@ package com.hobak.happinessql.domain.activity.api;
 
 import com.hobak.happinessql.domain.activity.application.ActivityCreateService;
 import com.hobak.happinessql.domain.activity.application.ActivityDeleteService;
-import com.hobak.happinessql.domain.activity.dto.ActivityCreateRequestDto;
-import com.hobak.happinessql.domain.activity.dto.ActivityCreateResponseDto;
-import com.hobak.happinessql.domain.activity.dto.ActivityListResponseDto;
+import com.hobak.happinessql.domain.activity.application.ActivityUpdateService;
+import com.hobak.happinessql.domain.activity.dto.*;
 import com.hobak.happinessql.domain.activity.application.ActivityListService;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class ActivityController {
     private final ActivityListService activityListService;
     private final ActivityCreateService activityCreateService;
     private final ActivityDeleteService activityDeleteService;
-
+    private final ActivityUpdateService activityUpdateService;
     @GetMapping
     public DataResponseDto<ActivityListResponseDto> getActivitiesByUserId(@RequestParam Long userId) {
         ActivityListResponseDto response = activityListService.getActivitiesByUserId(userId);
@@ -33,5 +32,10 @@ public class ActivityController {
     public Long deleteActivity(@PathVariable Long activityId){
         activityDeleteService.deleteActivity(activityId);
         return activityId;
+    }
+    @PutMapping("/{activityId}")
+    public DataResponseDto<ActivityUpdateResponseDto> updateActicity(@PathVariable Long activityId, @RequestBody ActivityUpdateRequestDto requestDto){
+        ActivityUpdateResponseDto responseDto = activityUpdateService.updateActivity(activityId,requestDto);
+        return DataResponseDto.of(responseDto,"활동을 성공적으로 수정했습니다.");
     }
 }

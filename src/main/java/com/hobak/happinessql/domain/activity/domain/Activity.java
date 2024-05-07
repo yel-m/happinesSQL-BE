@@ -40,5 +40,8 @@ public class Activity extends BaseTimeEntity {
         this.name = name;
         this.category = category;
     }
+    public void updateName(String name){
+        this.name = name;
+    }
 }
 
