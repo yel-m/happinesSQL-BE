@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ActivityUpdateRequestDto {
-    String name;
+public class ActivitySearchRequestDto {
+    private String search;
 }

@@ -11,4 +11,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByCategory(Category category);
     @Query(value = "SELECT MAX(a.activityId) + 1 FROM Activity a")
     Long findNextActivityId();
+
+    List<Activity> findByCategoryNameContaining(String keyword);
+    List<Activity> findByNameContaining(String keyword);
 }
