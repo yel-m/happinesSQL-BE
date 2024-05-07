@@ -29,8 +29,8 @@ public class ActivityController {
         ActivityCreateResponseDto response = activityCreateService.createActivity(request,userId);
         return DataResponseDto.of(response,"활동을 성공적으로 추가했습니다.");
     }
-    @DeleteMapping
-    public Long deleteActivity(@RequestParam Long activityId){
+    @DeleteMapping("/{activityId}")
+    public Long deleteActivity(@PathVariable Long activityId){
         activityDeleteService.deleteActivity(activityId);
         return activityId;
     }
