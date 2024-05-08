@@ -31,23 +31,23 @@ public class Location extends BaseTimeEntity {
     private String district;
 
     @Column(nullable = false)
-    private Double xPos;
+    private Double latitude;
 
     @Column(nullable = false)
-    private Double yPos;
+    private Double longitude;
 
     @OneToOne
     @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
     @Builder
-    public Location(String fullName, String country, String city, String district, Double xPos, Double yPos, Record record) {
+    public Location(String fullName, String country, String city, String district, Double latitude, Double longitude, Record record) {
         this.fullName = fullName;
         this.country = country;
         this.city = city;
         this.district = district;
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.record = record;
     }
 }
