@@ -28,8 +28,8 @@ public class RecordConverter {
                 .city(recordRequestDto.getCity())
                 .country(recordRequestDto.getCountry())
                 .district(recordRequestDto.getDistrict())
-                .xPos(recordRequestDto.getXPos())
-                .yPos(recordRequestDto.getYPos())
+                .latitude(recordRequestDto.getLatitude())
+                .longitude(recordRequestDto.getLongitude())
                 .record(record)
                 .build();
     }
