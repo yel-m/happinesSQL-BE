@@ -1,6 +1,7 @@
 package com.hobak.happinessql.domain.activity.api;
 
 import com.hobak.happinessql.domain.activity.application.*;
+import com.hobak.happinessql.domain.activity.converter.ActivityConverter;
 import com.hobak.happinessql.domain.activity.dto.*;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,15 @@ public class ActivityController {
         return DataResponseDto.of(response, "사용자의 모든 카테고리별 활동을 성공적으로 조회했습니다.");
     }
     @PostMapping
-    public DataResponseDto<ActivityCreateResponseDto> createActivity(@RequestBody ActivityCreateRequestDto request, @RequestParam Long userId){
-        ActivityCreateResponseDto response = activityCreateService.createActivity(request,userId);
-        return DataResponseDto.of(response,"활동을 성공적으로 추가했습니다.");
+    public DataResponseDto<ActivityResponseDto> createActivity(@RequestBody ActivityCreateRequestDto requestDto, @RequestParam Long userId){
+        ActivityResponseDto responseDto = activityCreateService.createActivity(requestDto,userId);
+        return DataResponseDto.of(responseDto,"활동을 성공적으로 추가했습니다.");
     }
     @DeleteMapping("/{activityId}")
-    public Long deleteActivity(@PathVariable Long activityId){
+    public DataResponseDto<ActivityResponseDto> deleteActivity(@PathVariable Long activityId){
         activityDeleteService.deleteActivity(activityId);
-        return activityId;
+        ActivityResponseDto responseDto = ActivityConverter.toActivityResponseDto(activityId);
+        return DataResponseDto.of(responseDto, "활동을 성공적으로 삭제했습니다.");
     }
     @PutMapping("/{activityId}")
     public DataResponseDto<ActivityUpdateResponseDto> updateActicity(@PathVariable Long activityId, @RequestBody ActivityUpdateRequestDto requestDto){

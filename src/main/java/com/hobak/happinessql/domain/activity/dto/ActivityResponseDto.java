@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ActivityCreateResponseDto {
+public class ActivityResponseDto {
     private Long activityId;
     @Builder
-    ActivityCreateResponseDto(Long activityId){
+    ActivityResponseDto(Long activityId){
         this.activityId = activityId;
     }
 }
