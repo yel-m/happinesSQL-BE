@@ -21,9 +21,7 @@ public class ActivityCreateService {
     private final CategoryRepository categoryRepository;
     public ActivityResponseDto createActivity(ActivityCreateRequestDto requestDto, Long userId) {
         Category category = categoryRepository.findByUserId(userId);
-
-        Long nextActivityId = activityRepository.findNextActivityId();
-        Activity activity = new Activity(nextActivityId, requestDto.getActivityName(), category);
+        Activity activity = ActivityConverter.toActivity(requestDto, category);
 
         Activity savedActivity = activityRepository.save(activity);
         return ActivityConverter.toActivityResponseDto(savedActivity.getActivityId());

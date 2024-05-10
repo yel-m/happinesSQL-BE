@@ -9,6 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ActivityConverter {
+
+    public static Activity toActivity(ActivityCreateRequestDto requestDto, Category category) {
+        return Activity.builder()
+                .name(requestDto.getActivityName())
+                .category(category)
+                .build();
+    }
     public static ActivityDto toActivityDto(Activity activity) {
         return ActivityDto.builder()
                 .id(activity.getActivityId())
@@ -39,8 +46,8 @@ public class ActivityConverter {
     }
 
 
-    public static ActivityCreateResponseDto toActivityCreateResponseDto(Long activityId){
-        return ActivityCreateResponseDto.builder()
+    public static ActivityResponseDto toActivityResponseDto(Long activityId){
+        return ActivityResponseDto.builder()
                 .activityId(activityId)
                 .build();
     }
