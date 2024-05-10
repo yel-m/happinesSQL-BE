@@ -40,6 +40,7 @@ public class ActivityListService {
         return ActivityListResponseDto.builder()
                 .categories(categoryDtos)
                 .build();
+        return ActivityConverter.toActivityListResponseDto(categoryDtos);
     }
 
     private List<ActivityDto> fetchActivityDtosByCategory(Category category) {
