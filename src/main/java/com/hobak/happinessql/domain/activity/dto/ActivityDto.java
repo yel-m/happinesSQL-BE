@@ -1,6 +1,5 @@
 package com.hobak.happinessql.domain.activity.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
