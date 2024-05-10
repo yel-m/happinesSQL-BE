@@ -33,10 +33,8 @@ public class RecordCreateRequestDto {
     private String district;
 
     @NotNull
-    @JsonProperty("x_pos")
-    private Double xPos;
+    private Double latitude;
 
     @NotNull
-    @JsonProperty("y_pos")
-    private Double yPos;
+    private Double longitude;
 }
