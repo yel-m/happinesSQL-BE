@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "activity")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
+@DynamicUpdate
 public class Activity extends BaseTimeEntity {
 
     @Id
