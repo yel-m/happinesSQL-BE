@@ -13,23 +13,23 @@ import java.util.List;
 
 public class RecordConverter {
 
-    public static Record toRecord(RecordCreateRequestDto recordRequestDto, User user, Activity activity) {
+    public static Record toRecord(RecordCreateRequestDto requestDto, User user, Activity activity) {
         return Record.builder()
-                .happiness(recordRequestDto.getHappiness())
-                .memo(recordRequestDto.getMemo())
+                .happiness(requestDto.getHappiness())
+                .memo(requestDto.getMemo())
                 .user(user)
                 .activity(activity)
                 .build();
     }
 
-    public static Location toLocation(RecordCreateRequestDto recordRequestDto, Record record) {
+    public static Location toLocation(RecordCreateRequestDto requestDto, Record record) {
         return Location.builder()
-                .fullName(recordRequestDto.getFullName())
-                .city(recordRequestDto.getCity())
-                .country(recordRequestDto.getCountry())
-                .district(recordRequestDto.getDistrict())
-                .xPos(recordRequestDto.getXPos())
-                .yPos(recordRequestDto.getYPos())
+                .fullName(requestDto.getFullName())
+                .city(requestDto.getCity())
+                .country(requestDto.getCountry())
+                .district(requestDto.getDistrict())
+                .xPos(requestDto.getXPos())
+                .yPos(requestDto.getYPos())
                 .record(record)
                 .build();
     }
