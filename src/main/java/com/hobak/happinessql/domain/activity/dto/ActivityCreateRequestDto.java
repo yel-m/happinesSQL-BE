@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ActivityCreateRequestDto {
-    private String category;
     private String activityName;
 }
