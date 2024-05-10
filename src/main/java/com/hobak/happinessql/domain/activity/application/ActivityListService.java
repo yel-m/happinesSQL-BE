@@ -24,26 +24,23 @@ public class ActivityListService {
     private final ActivityRepository activityRepository;
     private final CategoryRepository categoryRepository;
 
-    public ActivityListResponseDto getActivitiesByUserId(Long userId) {
+    public ActivityListResponseDto getActivities(Long userId) {
         List<CategoryDto> categoryDtos = new ArrayList<>();
 
         List<Category> categories = categoryRepository.findByUserIdIsNull();
         for (Category category : categories) {
-            List<ActivityDto> activityDtos = fetchActivityDtosByCategory(category);
+            List<ActivityDto> activityDtos = fetchActivityDtosBy(category);
             CategoryDto categoryDto = ActivityConverter.toCategoryDto(category, activityDtos);
             categoryDtos.add(categoryDto);
         }
-        Category ectCategory = categoryRepository.findByUserId(userId);
-        List<ActivityDto> ectActivities = fetchActivityDtosByCategory(ectCategory);
-        CategoryDto categoryDto2 = ActivityConverter.toCategoryDto(ectCategory, ectActivities);
-        categoryDtos.add(categoryDto2);
-        return ActivityListResponseDto.builder()
-                .categories(categoryDtos)
-                .build();
+        Category etcCategory = categoryRepository.findByUserId(userId);
+        List<ActivityDto> etcActivities = fetchActivityDtosBy(etcCategory);
+        CategoryDto categoryDto = ActivityConverter.toCategoryDto(etcCategory, etcActivities);
+        categoryDtos.add(categoryDto);
         return ActivityConverter.toActivityListResponseDto(categoryDtos);
     }
 
-    private List<ActivityDto> fetchActivityDtosByCategory(Category category) {
+    private List<ActivityDto> fetchActivityDtosBy(Category category) {
         List<Activity> activities = activityRepository.findByCategory(category);
         return activities.stream()
                 .map(activity -> ActivityConverter.toActivityDto(activity))

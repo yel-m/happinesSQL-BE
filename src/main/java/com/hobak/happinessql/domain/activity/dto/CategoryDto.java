@@ -17,6 +17,7 @@ public class CategoryDto {
     private Long id;
 
     private String name;
+
     private List<ActivityDto> activities;
 
     @Builder
