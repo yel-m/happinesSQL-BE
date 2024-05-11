@@ -51,6 +51,12 @@ public class ActivityConverter {
                 .activityId(activityId)
                 .build();
     }
+
+    public static ActivityListResponseDto toActivityListResponseDto(List<CategoryDto> categoryDtos) {
+        return ActivityListResponseDto.builder()
+                .categories(categoryDtos)
+                .build();
+    }
     public static ActivityUpdateResponseDto toActivityUpdateResponseDto(Activity activity){
         return ActivityUpdateResponseDto.builder()
                 .categoryId(activity.getCategory().getCategoryId())
