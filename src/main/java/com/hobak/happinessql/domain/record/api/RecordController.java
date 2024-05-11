@@ -11,6 +11,9 @@ import com.hobak.happinessql.domain.user.domain.Gender;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.repository.UserRepository;
 import com.hobak.happinessql.global.response.DataResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Tag(name="Record", description = "행복기록 관련 REST API에 대한 명세를 제공합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/records")
@@ -28,7 +32,7 @@ public class RecordController {
     private final RecordPagingService recordPagingService;
     private final UserRepository userRepository;
 
-
+    @Operation(summary = "행복 기록 추가", description = "행복 기록을 생성합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public DataResponseDto<Object> createRecord(
             @Valid @RequestPart(value="content") RecordCreateRequestDto requestDto,
@@ -54,6 +58,10 @@ public class RecordController {
         return DataResponseDto.of(recordCreationResponseDto, "행복 기록이 저장되었습니다.");
     }
 
+    @Operation(summary = "행복 톺아보기", description = "유저가 갖고 있는 행복 기록을 무한 스크롤 방식으로 조회합니다.",
+            parameters = {@Parameter(name="lastRecordId", description="현재까지 페이지에 그려진 게시물 id 중 가장 작은 값 (최신순이므로 아래로 내려갈수록 id값이 적어집니다.)"),
+                    @Parameter(name="size", description = "한 번에 가져올 레코드의 개수")
+    })
     @GetMapping
     public DataResponseDto<Object> getRecordList(@RequestParam Long lastRecordId, @RequestParam int size) {
         // TODO : 임시값 -> 로그인한 유저의 id를 찾아내는 로직으로 변경
