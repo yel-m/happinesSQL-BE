@@ -7,7 +7,6 @@ import com.hobak.happinessql.domain.record.converter.RecordConverter;
 import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
-import com.hobak.happinessql.domain.user.repository.UserRepository;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +27,6 @@ public class RecordController {
 
     private final RecordCreateService recordCreateService;
     private final RecordPagingService recordPagingService;
-    private final UserRepository userRepository;
 
     @Operation(summary = "행복 기록 추가", description = "행복 기록을 생성합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
