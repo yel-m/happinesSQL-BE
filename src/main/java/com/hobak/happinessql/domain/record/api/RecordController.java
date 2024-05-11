@@ -42,7 +42,7 @@ public class RecordController {
         return DataResponseDto.of(recordCreationResponseDto, "행복 기록이 저장되었습니다.");
     }
 
-    @Operation(summary = "행복 톺아보기", description = "유저가 갖고 있는 행복 기록을 무한 스크롤 방식으로 조회합니다.",
+    @Operation(summary = "행복 톺아보기", description = "유저가 갖고 있는 행복 기록을 무한 스크롤 방식으로 조회합니다. lastRecordId를 지정하지 않으면 자동으로 최신 게시물을 size만큼 가져옵니다.",
             parameters = {@Parameter(name="lastRecordId", description="현재까지 페이지에 그려진 게시물 id 중 가장 작은 값 (최신순이므로 아래로 내려갈수록 id값이 적어집니다.)"),
                     @Parameter(name="size", description = "한 번에 가져올 레코드의 개수")
     })
