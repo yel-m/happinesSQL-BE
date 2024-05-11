@@ -17,7 +17,7 @@ public class ActivityController {
     private final ActivityUpdateService activityUpdateService;
     private final ActivitySearchService activitySearchService;
     @GetMapping
-    public DataResponseDto<ActivityListResponseDto> getActivitiesByUserId(@RequestParam Long userId) {
+    public DataResponseDto<ActivityListResponseDto> getActivities(@RequestParam Long userId) {
         ActivityListResponseDto response = activityListService.getActivities(userId);
         return DataResponseDto.of(response, "사용자의 모든 카테고리별 활동을 성공적으로 조회했습니다.");
     }
