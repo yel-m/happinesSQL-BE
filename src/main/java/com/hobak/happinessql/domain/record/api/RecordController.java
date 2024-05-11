@@ -49,9 +49,7 @@ public class RecordController {
                     @Parameter(name="size", description = "한 번에 가져올 레코드의 개수")
     })
     @GetMapping
-    public DataResponseDto<Object> getRecordList(@RequestParam Long lastRecordId, @RequestParam int size) {
-        // TODO : 임시값 -> 로그인한 유저의 id를 찾아내는 로직으로 변경
-        Long userId = 1L;
+    public DataResponseDto<Object> getRecordList(@RequestParam(required = false) Long lastRecordId, @RequestParam int size, Long userId) {
         List<RecordResponseDto> responseDtos = recordPagingService.fetchRecordPagesBy(lastRecordId, size, userId);
         return DataResponseDto.of(responseDtos, "행복 기록을 성공적으로 조회했습니다.");
     }
