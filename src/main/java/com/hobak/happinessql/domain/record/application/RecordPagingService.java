@@ -23,8 +23,20 @@ public class RecordPagingService {
 
     public List<RecordResponseDto> fetchRecordPagesBy(Long lastRecordId, int size, Long userId) {
         User user = userFindService.findUserById(userId);
-        Page<Record> records = fetchPages(lastRecordId, size, user);
+
+        Page<Record> records;
+        if(lastRecordId == null) {
+            records = fetchPages(size, user);
+        } else {
+            records = fetchPages(lastRecordId, size, user);
+        }
+
         return RecordConverter.toRecordResponseDtos(records.getContent());
+    }
+
+    private Page<Record> fetchPages(int size, User user) {
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return recordRepository.findByUserOrderByRecordIdDesc(user, pageRequest);
     }
 
     private Page<Record> fetchPages(Long lastRecordId, int size, User user) {
