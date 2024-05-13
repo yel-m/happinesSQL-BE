@@ -22,7 +22,7 @@ public class Record extends BaseTimeEntity {
     private Long recordId;
 
     @Column(nullable = false)
-    private int happiness;
+    private Integer happiness;
 
     @Column(nullable = true)
     private String memo;
