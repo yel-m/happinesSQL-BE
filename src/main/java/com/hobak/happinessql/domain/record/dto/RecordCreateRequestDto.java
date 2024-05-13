@@ -15,7 +15,7 @@ public class RecordCreateRequestDto {
     private Long activityId;
 
     @NotNull
-    private int happiness;
+    private Integer happiness;
 
     private String memo;
 

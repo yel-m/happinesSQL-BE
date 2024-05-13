@@ -42,7 +42,7 @@ public class Record extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Record(int happiness, String memo, User user, Activity activity) {
+    public Record(Integer happiness, String memo, User user, Activity activity) {
         this.happiness = happiness;
         this.memo = memo;
         this.user = user;
