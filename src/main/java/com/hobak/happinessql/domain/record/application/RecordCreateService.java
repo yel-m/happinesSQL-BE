@@ -35,22 +35,17 @@ public class RecordCreateService {
     @Transactional
     public Long createRecord(Long userId, RecordCreateRequestDto requestDto, MultipartFile img) {
 
-        // 사용자 찾기
         User user = userFindService.findUserById(userId);
 
-        // 활동 찾기
         Activity activity = activityRepository.findById(requestDto.getActivityId())
                 .orElseThrow(() -> new ActivityNotFoundException("Activity with ID " + requestDto.getActivityId()));
 
-        // 기록 생성
         Record record = RecordConverter.toRecord(requestDto, user, activity);
         Record newRecord = recordRepository.save(record);
 
-        // 위치 저장
         Location location = RecordConverter.toLocation(requestDto, newRecord);
         locationRepository.save(location);
 
-        // 이미지 업로드
         if (img != null && !img.isEmpty()) {
             String imgUrl = awsS3Service.uploadFile(img);
             RecordImg recordImg = RecordImg.builder()
@@ -59,7 +54,7 @@ public class RecordCreateService {
                     .build();
             recordImgRepository.save(recordImg);
         }
-        // 생성된 Record의 ID 반환
+
         return newRecord.getRecordId();
     }
 

@@ -29,6 +29,9 @@ public class Activity extends BaseTimeEntity {
     private String name;
 
     @Column
+    private String description;
+
+    @Column
     private String emoji;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
