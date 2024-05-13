@@ -50,7 +50,7 @@ public class ActivityController {
         return DataResponseDto.of(responseDto,"활동을 성공적으로 수정했습니다.");
     }
 
-    @Operation(summary = "활동 추가", description = "유저가 갖고 있는 활동을 검색합니다. (활동의 description에 있는 내용은 아직 검색되지 않습니다.)")
+    @Operation(summary = "활동 검색", description = "유저가 갖고 있는 활동을 검색합니다. (활동의 description에 있는 내용은 아직 검색되지 않습니다.)")
     @PostMapping("/search")
     public DataResponseDto<ActivitySearchResponseDto> searchActivities(@RequestBody ActivitySearchRequestDto requestDto, @RequestParam Long userId) {
         ActivitySearchResponseDto responseDto = activitySearchService.searchActivities(requestDto.getSearch(), userId);
