@@ -15,7 +15,7 @@ public class RecordCalendarResponseDto {
     Integer happiness;
 
     @Builder
-    public RecordCalendarResponseDto(LocalDate date, int happiness) {
+    public RecordCalendarResponseDto(LocalDate date, Integer happiness) {
         this.date = date;
         this.happiness = happiness;
     }
