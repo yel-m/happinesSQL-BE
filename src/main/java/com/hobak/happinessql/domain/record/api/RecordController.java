@@ -1,9 +1,12 @@
 package com.hobak.happinessql.domain.record.api;
 
 
+
+import com.hobak.happinessql.domain.record.application.RecordCalendarListService;
 import com.hobak.happinessql.domain.record.application.RecordCreateService;
 import com.hobak.happinessql.domain.record.application.RecordPagingService;
 import com.hobak.happinessql.domain.record.converter.RecordConverter;
+import com.hobak.happinessql.domain.record.dto.RecordCalendarResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
@@ -27,10 +30,11 @@ public class RecordController {
 
     private final RecordCreateService recordCreateService;
     private final RecordPagingService recordPagingService;
+    private final RecordCalendarListService recordCalendarListService;
 
     @Operation(summary = "행복 기록 추가", description = "행복 기록을 생성합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public DataResponseDto<Object> createRecord(
+    public DataResponseDto<RecordCreateResponseDto> createRecord(
             @Valid @RequestPart(value="content") RecordCreateRequestDto requestDto,
             @RequestPart(required = false) MultipartFile img,
             Long userId
@@ -47,9 +51,19 @@ public class RecordController {
                     @Parameter(name="size", description = "한 번에 가져올 레코드의 개수")
     })
     @GetMapping
-    public DataResponseDto<Object> getRecordList(@RequestParam(required = false) Long lastRecordId, @RequestParam int size, Long userId) {
+    public DataResponseDto<List<RecordResponseDto>> getRecordList(@RequestParam(required = false) Long lastRecordId, @RequestParam int size, Long userId) {
         List<RecordResponseDto> responseDtos = recordPagingService.fetchRecordPagesBy(lastRecordId, size, userId);
         return DataResponseDto.of(responseDtos, "행복 기록을 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "행복 달력 조회", description = "쿼리 파타미터로 지정한 year, month에 해당하는 행복 기록 평균을 날짜별로 조회합니다. \n 이 때 행복지수 평균은 1~5 사이의 값으로 나타냅니다.",
+            parameters = {@Parameter(name="year", description = "year를 지정하지 않으면 오늘 날짜 기준으로 자동 설정됩니다."),
+                    @Parameter(name="month", description = "month를 지정하지 않으면 오늘 날짜 기준으로 자동 설정됩니다.")
+    })
+    @GetMapping("/calendar")
+    public DataResponseDto<List<RecordCalendarResponseDto>> getRecordCalenderList(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year, @RequestParam Long userId) {
+        List<RecordCalendarResponseDto> responseDtos = recordCalendarListService.getHappinessAverages(month, year, userId);
+        return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
     }
 
 
