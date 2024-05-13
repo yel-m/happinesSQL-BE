@@ -3,10 +3,12 @@ package com.hobak.happinessql.domain.record.converter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
+import com.hobak.happinessql.domain.record.dto.RecordCalendarResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,14 @@ public class RecordConverter {
         return RecordCreateResponseDto
                 .builder()
                 .recordId(recordId)
+                .build();
+    }
+
+    public static RecordCalendarResponseDto toRecordCalendarResponseDto(LocalDate date, Integer averageHappiness) {
+        return RecordCalendarResponseDto
+                .builder()
+                .date(date)
+                .happiness(averageHappiness)
                 .build();
     }
 }
