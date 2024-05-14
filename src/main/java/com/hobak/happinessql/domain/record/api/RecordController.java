@@ -3,6 +3,7 @@ package com.hobak.happinessql.domain.record.api;
 
 
 import com.hobak.happinessql.domain.record.application.RecordCalendarListService;
+import com.hobak.happinessql.domain.record.application.RecordCalendarDetailService;
 import com.hobak.happinessql.domain.record.application.RecordCreateService;
 import com.hobak.happinessql.domain.record.application.RecordPagingService;
 import com.hobak.happinessql.domain.record.converter.RecordConverter;
@@ -31,6 +32,7 @@ public class RecordController {
     private final RecordCreateService recordCreateService;
     private final RecordPagingService recordPagingService;
     private final RecordCalendarListService recordCalendarListService;
+    private final RecordCalendarDetailService recordCalendarDetailService;
 
     @Operation(summary = "행복 기록 추가", description = "행복 기록을 생성합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -63,6 +65,13 @@ public class RecordController {
     @GetMapping("/calendar")
     public DataResponseDto<List<RecordCalendarResponseDto>> getRecordCalenderList(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year, @RequestParam Long userId) {
         List<RecordCalendarResponseDto> responseDtos = recordCalendarListService.getHappinessAverages(month, year, userId);
+        return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "행복 달력 상세 조회", description = "패스 파라미터로 받은 날짜에 해당하는 모든 행복 기록을 조회합니다.")
+    @GetMapping("/calendar/{date}")
+    public DataResponseDto<List<RecordResponseDto>> getRecordCalenderList(@PathVariable String date, @RequestParam Long userId) {
+        List<RecordResponseDto> responseDtos = recordCalendarDetailService.getRecords(date, userId);
         return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
     }
 
