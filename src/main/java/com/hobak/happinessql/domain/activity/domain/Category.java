@@ -29,8 +29,7 @@ public class Category extends BaseTimeEntity {
     private Long userId;
 
     @Builder
-    public Category(Long categoryId, String name, List<Activity> activities, Long userId) {
-        this.categoryId = categoryId;
+    public Category(String name, List<Activity> activities, Long userId) {
         this.name = name;
         this.activities = activities;
         this.userId = userId;
