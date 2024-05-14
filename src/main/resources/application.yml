@@ -40,4 +40,4 @@ cloud:
     stack:
       auto: false
 jwt:
-  secret: c328339b9f2f382849ab7cabf59397c72b0871cad811340fb8508ed4c8633a13
+  secret: ${JWT_SECRET_KEY}
