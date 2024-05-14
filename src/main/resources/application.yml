@@ -39,3 +39,5 @@ cloud:
       bucket: i-want-to-be-happy # 버킷 이름
     stack:
       auto: false
+jwt:
+  secret: c328339b9f2f382849ab7cabf59397c72b0871cad811340fb8508ed4c8633a13
