@@ -29,35 +29,40 @@ public class RecordCalendarListService {
 
     public List<RecordCalendarResponseDto> getHappinessAverages(Integer month, Integer year, Long userId) {
         User user = userFindService.findUserById(userId);
+        year = (year == null) ? LocalDate.now().getYear() : year;
+        month = (month == null) ? LocalDate.now().getMonthValue() : month;
 
-        if(year == null) {
-            year = LocalDate.now().getYear();
-        }
+        List<Record> records =  findRecordsBy(month, year, user);
 
-        if(month == null) {
-            month = LocalDate.now().getMonthValue();
-        }
+        Map<LocalDate, List<Integer>> happinessIndexesByDate = calculateHappinessIndexes(records);
+        List<RecordCalendarResponseDto> responseDtos = createResponseDtos(happinessIndexesByDate);
 
+        return responseDtos.stream()
+                .sorted(Comparator.comparing(RecordCalendarResponseDto::getDate))
+                .collect(Collectors.toList());
+    }
+
+    private List<Record> findRecordsBy(Integer month, Integer year, User user) {
         LocalDateTime startOfMonth = YearMonth.of(year, month).atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = YearMonth.of(year, month).atEndOfMonth().atTime(23, 59);
+        return recordRepository.findAllByCreatedAtBetweenAndUser(startOfMonth, endOfMonth, user);
+    }
 
-        List<Record> records = recordRepository.findAllByCreatedAtBetweenAndUser(startOfMonth, endOfMonth, user);
-
-        Map<LocalDate, List<Integer>> happinessIndexesByDate = records.stream()
+    private Map<LocalDate, List<Integer>> calculateHappinessIndexes(List<Record> records) {
+        return records.stream()
                 .collect(Collectors.groupingBy(
                         record -> record.getCreatedAt().toLocalDate(),
                         Collectors.mapping(Record::getHappiness, Collectors.toList())
                 ));
+    }
 
+    private List<RecordCalendarResponseDto> createResponseDtos(Map<LocalDate, List<Integer>> happinessIndexesByDate) {
         List<RecordCalendarResponseDto> responseDtos = new ArrayList<>();
         happinessIndexesByDate.forEach((date, happinessIndexes) -> {
             Integer averageHappiness = Calculator.getAverage(happinessIndexes);
             RecordCalendarResponseDto dto = RecordConverter.toRecordCalendarResponseDto(date, averageHappiness);
             responseDtos.add(dto);
         });
-
-        return responseDtos.stream()
-                .sorted(Comparator.comparing(RecordCalendarResponseDto::getDate))
-                .collect(Collectors.toList());
+        return responseDtos;
     }
 }
