@@ -18,6 +18,7 @@ public class ActivityConverter {
     }
     public static ActivityDto toActivityDto(Activity activity) {
         return ActivityDto.builder()
+                .description(activity.getDescription())
                 .id(activity.getActivityId())
                 .name(activity.getName())
                 .emoji(activity.getEmoji())

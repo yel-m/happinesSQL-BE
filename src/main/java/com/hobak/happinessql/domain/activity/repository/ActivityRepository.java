@@ -14,4 +14,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     List<Activity> findByCategoryNameContaining(String keyword);
     List<Activity> findByNameContaining(String keyword);
+    List<Activity> findByDescriptionContaining(String keyword);
 }

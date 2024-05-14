@@ -25,7 +25,7 @@ public class ActivitySearchService {
     public ActivitySearchResponseDto searchActivities(String keyword, Long userId) {
         List<Activity> activitiesByCategory = activityRepository.findByCategoryNameContaining(keyword);
         List<Activity> activitiesByName = activityRepository.findByNameContaining(keyword);
-
+        List<Activity> activitiesByDescription = activityRepository.findByDescriptionContaining(keyword);
         Map<Long, CategoryDto> categoryDtoMap = new HashMap<>();
 
         for (Activity activity : activitiesByCategory) {
@@ -39,21 +39,32 @@ public class ActivitySearchService {
 
         for (Activity activity : activitiesByName) {
             Category category = activity.getCategory();
-            if(categoryDtoMap.containsKey(category.getCategoryId())){
+            if(activitiesByCategory.contains(activity)){
                 continue;
             }
-            if(category.getUserId() == null || category.getUserId().equals(userId)){
-                CategoryDto categoryDto = categoryDtoMap.getOrDefault(category.getCategoryId(), ActivityConverter.toCategoryDto(category));
-                ActivityDto activityDto = ActivityConverter.toActivityDto(activity);
-                if (!categoryDto.getActivities().contains(activityDto)) {
-                    categoryDto.getActivities().add(activityDto);
-                }
-                categoryDtoMap.put(category.getCategoryId(), categoryDto);
-            }
+            addActivity(userId, categoryDtoMap, activity, category);
         }
-
+        for(Activity activity : activitiesByDescription) {
+            Category category = activity.getCategory();
+            if(activitiesByCategory.contains(activity) || activitiesByName.contains(activity)){
+                continue;
+            }
+            addActivity(userId, categoryDtoMap, activity, category);
+        }
         return ActivityConverter
                 .toActivitySearchResponseDto(new ArrayList<>(categoryDtoMap.values()));
+
+    }
+
+    private void addActivity(Long userId, Map<Long, CategoryDto> categoryDtoMap, Activity activity, Category category) {
+        if(category.getUserId() == null || category.getUserId().equals(userId)){
+            CategoryDto categoryDto = categoryDtoMap.getOrDefault(category.getCategoryId(), ActivityConverter.toCategoryDto(category));
+            ActivityDto activityDto = ActivityConverter.toActivityDto(activity);
+            if (!categoryDto.getActivities().contains(activityDto)) {
+                categoryDto.getActivities().add(activityDto);
+            }
+            categoryDtoMap.put(category.getCategoryId(), categoryDto);
+        }
     }
 
 }
