@@ -3,6 +3,7 @@ package com.hobak.happinessql.domain.activity.converter;
 import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.activity.domain.Category;
 import com.hobak.happinessql.domain.activity.dto.*;
+import com.hobak.happinessql.global.util.StringParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ActivityConverter {
     }
     public static ActivityDto toActivityDto(Activity activity) {
         return ActivityDto.builder()
-                .description(activity.getDescription())
+                .description(StringParser.extractTags(activity.getDescription()))
                 .id(activity.getActivityId())
                 .name(activity.getName())
                 .emoji(activity.getEmoji())
