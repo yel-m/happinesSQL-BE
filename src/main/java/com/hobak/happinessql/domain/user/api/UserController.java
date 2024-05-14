@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.user.api;
 
+import com.hobak.happinessql.domain.activity.application.CategoryCreateService;
 import com.hobak.happinessql.domain.user.application.CustomUserDetailsService;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.application.UserProfileService;
@@ -65,9 +66,11 @@ public class UserController {
     public String test(){
         return "success";
     }
+    private final CategoryCreateService categoryCreateService;
     @PostMapping("/sign-up")
     public DataResponseDto<Object> signUp(@RequestBody SignUpDto signUpDto){
         UserDto savedUserDto = userService.signUp(signUpDto);
+        categoryCreateService.createCategory(savedUserDto.getUserid());
         return DataResponseDto.of("회원가입이 성공적으로 처리되었습니다.");
     }
 }
