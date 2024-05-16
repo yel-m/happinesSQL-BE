@@ -68,7 +68,9 @@ public class RecordController {
         return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
     }
 
-    @Operation(summary = "행복 달력 상세 조회", description = "패스 파라미터로 받은 날짜에 해당하는 모든 행복 기록을 조회합니다.")
+    @Operation(summary = "행복 달력 상세 조회", description = "패스 파라미터로 받은 날짜에 해당하는 모든 행복 기록을 조회합니다.",
+            parameters = {@Parameter(name="date", description = "format : yyyy-mm-dd")
+    })
     @GetMapping("/calendar/{date}")
     public DataResponseDto<List<RecordResponseDto>> getRecordCalenderList(@PathVariable String date, @RequestParam Long userId) {
         List<RecordResponseDto> responseDtos = recordCalendarDetailService.getRecords(date, userId);
