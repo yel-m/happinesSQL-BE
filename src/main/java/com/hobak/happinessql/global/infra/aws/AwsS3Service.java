@@ -45,7 +45,7 @@ public class AwsS3Service {
             throw new GeneralException(Code.INTERNAL_ERROR, "파일 업로드에 실패했습니다.");
         }
 
-        return fileName;
+        return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
     // 먼저 파일 업로드시, 파일명을 난수화하기 위해 UUID 를 활용하여 난수를 돌린다.
