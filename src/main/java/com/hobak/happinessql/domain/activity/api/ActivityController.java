@@ -5,6 +5,8 @@ import com.hobak.happinessql.domain.activity.converter.ActivityConverter;
 import com.hobak.happinessql.domain.activity.dto.*;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.domain.User;
+import com.hobak.happinessql.global.exception.GeneralException;
+import com.hobak.happinessql.global.response.Code;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,7 +56,7 @@ public class ActivityController {
             return DataResponseDto.of(responseDto, "활동을 성공적으로 삭제했습니다.");
         }
         else {
-            return DataResponseDto.of(null, "본인이 추가하지 않은 활동은 삭제가 불가합니다.");
+            throw new GeneralException(Code.INTERNAL_ERROR,"본인이 추가하지 않은 활동은 삭제가 불가합니다.");
         }
 
     }
@@ -68,7 +70,7 @@ public class ActivityController {
             return DataResponseDto.of(responseDto,"활동을 성공적으로 수정했습니다.");
         }
         else {
-            return DataResponseDto.of(null, "본인이 추가하지 않은 활동은 수정이 불가합니다.");
+            throw new GeneralException(Code.INTERNAL_ERROR,"본인이 추가하지 않은 활동은 수정이 불가합니다.");
         }
     }
 
