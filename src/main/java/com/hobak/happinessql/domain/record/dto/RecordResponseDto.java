@@ -18,7 +18,7 @@ public class RecordResponseDto {
     @JsonProperty("record_id")
     private Long recordId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일", timezone = "Asia/Seoul")
     private LocalDateTime date;
 
     private String memo;
