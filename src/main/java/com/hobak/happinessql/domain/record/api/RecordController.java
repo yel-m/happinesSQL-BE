@@ -11,6 +11,8 @@ import com.hobak.happinessql.domain.record.dto.RecordCalendarResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
 import com.hobak.happinessql.domain.record.dto.RecordCreateResponseDto;
 import com.hobak.happinessql.domain.record.dto.RecordResponseDto;
+import com.hobak.happinessql.domain.user.application.UserFindService;
+import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +20,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,15 +37,17 @@ public class RecordController {
     private final RecordPagingService recordPagingService;
     private final RecordCalendarListService recordCalendarListService;
     private final RecordCalendarDetailService recordCalendarDetailService;
+    private final UserFindService userFindService;
 
     @Operation(summary = "행복 기록 추가", description = "행복 기록을 생성합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public DataResponseDto<RecordCreateResponseDto> createRecord(
             @Valid @RequestPart(value="content") RecordCreateRequestDto requestDto,
             @RequestPart(required = false) MultipartFile img,
-            Long userId
+            @AuthenticationPrincipal UserDetails userDetails
         ) {
-
+        User user = userFindService.findByUserDetails(userDetails);
+        Long userId = user.getUserId();
         Long recordId = recordCreateService.createRecord(userId, requestDto, img);
         RecordCreateResponseDto recordCreationResponseDto = RecordConverter.toRecordCreateResponseDto(recordId);
 
@@ -53,7 +59,9 @@ public class RecordController {
                     @Parameter(name="size", description = "한 번에 가져올 레코드의 개수")
     })
     @GetMapping
-    public DataResponseDto<List<RecordResponseDto>> getRecordList(@RequestParam(required = false) Long lastRecordId, @RequestParam int size, Long userId) {
+    public DataResponseDto<List<RecordResponseDto>> getRecordList(@RequestParam(required = false) Long lastRecordId, @RequestParam int size, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        Long userId = user.getUserId();
         List<RecordResponseDto> responseDtos = recordPagingService.fetchRecordPagesBy(lastRecordId, size, userId);
         return DataResponseDto.of(responseDtos, "행복 기록을 성공적으로 조회했습니다.");
     }
@@ -63,7 +71,9 @@ public class RecordController {
                     @Parameter(name="month", description = "month를 지정하지 않으면 오늘 날짜 기준으로 자동 설정됩니다.")
     })
     @GetMapping("/calendar")
-    public DataResponseDto<List<RecordCalendarResponseDto>> getRecordCalenderList(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year, @RequestParam Long userId) {
+    public DataResponseDto<List<RecordCalendarResponseDto>> getRecordCalenderList(@RequestParam(required = false) Integer month, @RequestParam(required = false) Integer year, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        Long userId = user.getUserId();
         List<RecordCalendarResponseDto> responseDtos = recordCalendarListService.getHappinessAverages(month, year, userId);
         return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
     }
@@ -72,7 +82,9 @@ public class RecordController {
             parameters = {@Parameter(name="date", description = "format : yyyy-mm-dd")
     })
     @GetMapping("/calendar/{date}")
-    public DataResponseDto<List<RecordResponseDto>> getRecordCalenderList(@PathVariable String date, @RequestParam Long userId) {
+    public DataResponseDto<List<RecordResponseDto>> getRecordCalenderList(@PathVariable String date, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        Long userId = user.getUserId();
         List<RecordResponseDto> responseDtos = recordCalendarDetailService.getRecords(date, userId);
         return DataResponseDto.of(responseDtos, "행복 달력을 성공적으로 조회했습니다.");
     }

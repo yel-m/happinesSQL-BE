@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,29 +24,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/users")
 public class UserController {
 
-    private final UserFindService userFindService;
     private final UserProfileService userProfileService;
     private final UserService userService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CategoryCreateService categoryCreateService;
+    private final UserFindService userFindService;
 
     @NonNull
     private PasswordEncoder passwordEncoder;
     @GetMapping("/profile")
-    public DataResponseDto<Object> getUserInfo() {
-        // TODO : 임시값 -> 로그인한 유저의 id를 찾아내는 로직으로 변경
-        Long userId = 1L;
-
-        User user = userFindService.findUserById(userId);
+    public DataResponseDto<Object> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
         UserInfoResponseDto userInfoResponseDto = UserConverter.toUserInfoResponseDto(user);
-
         return DataResponseDto.of(userInfoResponseDto, "유저 프로필을 성공적으로 조회했습니다.");
     }
 
     @PutMapping("/profile")
-    public DataResponseDto<Object> updateUserInfo(@RequestBody @Valid UserProfileUpdateRequestDto requestDto) {
-        Long userId = 1L;
-
-        User user = userFindService.findUserById(userId);
+    public DataResponseDto<Object> updateUserInfo(@RequestBody @Valid UserProfileUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
         User updatedUser = userProfileService.updateUserProfile(user, requestDto);
         UserInfoResponseDto responseDto = UserConverter.toUserInfoResponseDto(updatedUser);
 
@@ -62,11 +58,6 @@ public class UserController {
 
     }
 
-    @PostMapping("/test")
-    public String test(){
-        return "success";
-    }
-    private final CategoryCreateService categoryCreateService;
     @PostMapping("/sign-up")
     public DataResponseDto<Object> signUp(@RequestBody SignUpDto signUpDto){
         UserDto savedUserDto = userService.signUp(signUpDto);

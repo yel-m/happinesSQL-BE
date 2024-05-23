@@ -4,6 +4,7 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.exception.UserNotFoundException;
 import com.hobak.happinessql.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,5 +16,9 @@ public class UserFindService {
     public User findUserById(Long userId) {
         return userRespository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with ID" + userId));
+    }
+
+    public User findByUserDetails(UserDetails userDetails){
+        return userRespository.findUserByusername(userDetails.getUsername());
     }
 }
