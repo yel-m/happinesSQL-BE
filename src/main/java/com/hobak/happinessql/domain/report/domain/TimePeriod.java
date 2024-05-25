@@ -2,7 +2,6 @@ package com.hobak.happinessql.domain.report.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hobak.happinessql.domain.user.domain.Gender;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
