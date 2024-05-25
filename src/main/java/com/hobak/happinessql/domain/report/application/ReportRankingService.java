@@ -23,7 +23,7 @@ public class ReportRankingService {
     }
 
     public List<ActivityHappinessDto> getTop3AnnualHappiestActivities(User user) {
-        Integer currentYear = LocalDate.now().getYear();
+        int currentYear = LocalDate.now().getYear();
         LocalDateTime startOfYear = LocalDateTime.of(currentYear, 1, 1, 0, 0);
         LocalDateTime endOfYear = LocalDateTime.of(currentYear, 12, 31, 23, 59, 59);
         List<Record> records = recordRepository.findAllByCreatedAtBetweenAndUser(startOfYear, endOfYear, user);
