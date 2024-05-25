@@ -41,7 +41,6 @@ public class ActivityHappinessAnalyzer {
                 .max(Comparator.comparing(entry -> activityFrequency.get(entry.getKey())))
                 .map(Map.Entry::getKey);
 
-        System.out.println("평균 행복도가 높은 Activity : " + happiestActivity + "행복도 : " + maxHappiness);
         // 평균 행복도와 빈도가 같은 Activity가 여러 개인 경우, 랜덤으로 선택
         List<String> happiestActivities = activityAverageHappiness.entrySet().stream()
                 .filter(entry -> entry.getValue() == maxHappiness)
