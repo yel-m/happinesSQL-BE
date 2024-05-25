@@ -6,19 +6,22 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum TimePeriod {
+    DAWN("새벽"),
     MORNING("아침"),
-    AFTERNOON("점심"),
+    AFTERNOON("낮"),
     EVENING("저녁"),
     NIGHT("밤");
 
     private final String viewName;
 
     public static TimePeriod of(int hour) {
-        if (hour >= 6 && hour < 12) {
+        if (hour >= 0 && hour < 5) {
+            return DAWN;
+        } else if (hour >= 5 && hour < 9) {
             return MORNING;
-        } else if (hour >= 12 && hour < 18) {
+        } else if (hour >= 9 && hour < 17) {
             return AFTERNOON;
-        } else if (hour >= 18 && hour < 24) {
+        } else if (hour >= 17 && hour < 21) {
             return EVENING;
         } else {
             return NIGHT;
