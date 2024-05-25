@@ -9,7 +9,6 @@ import com.hobak.happinessql.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -35,14 +34,13 @@ public class ReportSummaryService {
         return generateReportSummary(annualRecords);
     }
 
-    public ReportSummaryResponseDto getWeeklySummary(User user) {
-        LocalDate today = LocalDate.now().with(DayOfWeek.MONDAY);
-        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
-        LocalDateTime startOfWeekDateTime = startOfWeek.atStartOfDay();
-        LocalDateTime endOfWeekDateTime = startOfWeek.plusDays(6).atTime(23, 59, 59);
+    public ReportSummaryResponseDto getMonthlySummary(User user) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfMonth = today.withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endOfMonth = today.withDayOfMonth(today.lengthOfMonth()).atTime(23, 59, 59);
 
-        List<Record> weeklyRecords = recordRepository.findAllByCreatedAtBetweenAndUser(startOfWeekDateTime, endOfWeekDateTime, user);
-        return generateReportSummary(weeklyRecords);
+        List<Record> monthlyRecords = recordRepository.findAllByCreatedAtBetweenAndUser(startOfMonth, endOfMonth, user);
+        return generateReportSummary(monthlyRecords);
     }
 
     private ReportSummaryResponseDto generateReportSummary(List<Record> records) {
