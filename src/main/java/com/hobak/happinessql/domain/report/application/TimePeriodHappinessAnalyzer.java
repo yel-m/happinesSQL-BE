@@ -38,9 +38,10 @@ public class TimePeriodHappinessAnalyzer {
         List<TimePeriod> candidates = averageHappinessMap.entrySet().stream()
                 .filter(entry -> entry.getValue() == maxAverageHappiness)
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-        for(TimePeriod candidate : candidates) {
-            System.out.println("candidate : " + candidate);
+                .toList();
+
+        if (candidates.isEmpty()) {
+            return null;
         }
 
         // 후보 중 빈도수가 가장 높은 시간대 찾기, 동일 빈도시 랜덤 선택
