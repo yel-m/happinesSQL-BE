@@ -82,7 +82,6 @@ public class ActivityHappinessAnalyzer {
                 .limit(topCount)
                 .map(entry -> {
                     String activity = entry.getKey();
-                    double averageHappiness = entry.getValue();
                     String emoji = activityEmojiMap.get(activity); // 이모지 가져오기
                     return ReportConverter.toActivityHappinessDto(0, activity, emoji);
                 })
