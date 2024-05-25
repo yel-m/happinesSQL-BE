@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.report.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hobak.happinessql.domain.report.domain.TimePeriod;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,8 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportSummaryResponseDto {
+
+    @JsonProperty("time_period")
     private TimePeriod timePeriod;
+
     private String location;
+
     private String activity;
 
     @Builder
