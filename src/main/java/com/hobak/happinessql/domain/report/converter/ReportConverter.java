@@ -2,6 +2,7 @@ package com.hobak.happinessql.domain.report.converter;
 
 import com.hobak.happinessql.domain.report.domain.TimePeriod;
 import com.hobak.happinessql.domain.report.dto.ActivityHappinessDto;
+import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
 import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
 
 public class ReportConverter {
@@ -18,6 +19,13 @@ public class ReportConverter {
                 .ranking(ranking)
                 .activity(activity)
                 .emoji(emoji)
+                .build();
+    }
+
+    public static LocationHappinessDto toLocationHappinessDto(int ranking, String location) {
+        return LocationHappinessDto.builder()
+                .ranking(ranking)
+                .location(location)
                 .build();
     }
 }
