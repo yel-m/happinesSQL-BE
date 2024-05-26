@@ -13,4 +13,5 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Page<Record> findByUserOrderByRecordIdDesc(User user, Pageable pageRequest);
     Page<Record> findByRecordIdLessThanAndUserOrderByRecordIdDesc(Long recordId, User user, Pageable pageRequest);
     List<Record> findAllByCreatedAtBetweenAndUser(LocalDateTime startOfMonth, LocalDateTime endOfMonth, User user);
+    List<Record> findAllByUser(User user);
 }
