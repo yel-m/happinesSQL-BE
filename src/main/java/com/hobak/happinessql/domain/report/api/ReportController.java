@@ -2,10 +2,12 @@ package com.hobak.happinessql.domain.report.api;
 
 
 import com.hobak.happinessql.domain.report.application.ReportActivityRankingService;
+import com.hobak.happinessql.domain.report.application.ReportGraphService;
 import com.hobak.happinessql.domain.report.application.ReportLocationRankingService;
 import com.hobak.happinessql.domain.report.application.ReportSummaryService;
 import com.hobak.happinessql.domain.report.dto.ActivityHappinessDto;
 import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
+import com.hobak.happinessql.domain.report.dto.ReportGraphResponseDto;
 import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.domain.User;
@@ -31,6 +33,7 @@ public class ReportController {
     private final ReportSummaryService reportSummaryService;
     private final ReportActivityRankingService reportActivityRankingService;
     private final ReportLocationRankingService reportLocationRankingService;
+    private final ReportGraphService reportGraphService;
     @Operation(summary = "[전체] 행복 종합 리포트", description = "전체 기간에서 언제, 어디에서, 무엇을 할 때 행복했는지에 대한 종합적인 리포트를 제공합니다.")
     @GetMapping("/all/summary")
     public DataResponseDto<ReportSummaryResponseDto> getAllSummary(@AuthenticationPrincipal UserDetails userDetails) {
@@ -102,7 +105,19 @@ public class ReportController {
         List<LocationHappinessDto> responseDto = reportLocationRankingService.getTop3MonthlyHappiestLocations(user);
         return DataResponseDto.of(responseDto, "행복도가 높은 Top 3 위치(월간)를 성공적으로 조회했습니다.");
     }
-
-
+    @Operation(summary = "[연간] 행복 그래프", description = "연간 행복지수 그래프를 제공합니다.")
+    @GetMapping("/year/graph")
+    public DataResponseDto<ReportGraphResponseDto> getAnnualGraph(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        ReportGraphResponseDto responseDto = reportGraphService.getAnnualGraph(user);
+        return DataResponseDto.of(responseDto, "연간 행복지수 그래프를 성공적으로 조회했습니다.");
+    }
+    @Operation(summary = "[월간] 행복 그래프", description = "월간 행복지수 그래프를 제공합니다.")
+    @GetMapping("/month/graph")
+    public DataResponseDto<ReportGraphResponseDto> getMonthlyGraph(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        ReportGraphResponseDto responseDto = reportGraphService.getMonthlyGraph(user);
+        return DataResponseDto.of(responseDto, "월간 행복지수 그래프를 성공적으로 조회했습니다.");
+    }
 
 }
