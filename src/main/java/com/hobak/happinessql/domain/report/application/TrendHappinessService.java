@@ -18,11 +18,11 @@ public class TrendHappinessService {
         averageHappiness = Math.round(averageHappiness * 100.0) / 100.0;
         HappinessLevel level = HappinessLevel.of(averageHappiness);
         String emoji;
-        if (averageHappiness >= 0 && averageHappiness < 2) {
+        if (averageHappiness >= 1 && averageHappiness < 2) {
             emoji = "😱";
-        } else if (averageHappiness >= 3 && averageHappiness < 4) {
+        } else if (averageHappiness >= 2 && averageHappiness < 3) {
             emoji = "🙁";
-        } else if (averageHappiness >= 4 && averageHappiness < 5) {
+        } else if (averageHappiness >= 3 && averageHappiness < 5) {
             emoji = "😐";
         } else if (averageHappiness >= 5 && averageHappiness < 6) {
             emoji = "🙂";

@@ -12,11 +12,11 @@ public enum HappinessLevel {
     VERY_HIGH("매우 높음");
     private final String viewName;
     public static HappinessLevel of(double happiness) {
-        if (happiness >= 0 && happiness < 2) {
+        if (happiness >= 1 && happiness < 2) {
             return VERY_LOW;
-        } else if (happiness >= 3 && happiness < 4) {
+        } else if (happiness >= 2 && happiness < 3) {
             return LOW;
-        } else if (happiness >= 4 && happiness < 5) {
+        } else if (happiness >= 3 && happiness < 5) {
             return MEDIUM;
         } else if (happiness >= 5 && happiness < 6) {
             return HIGH;
