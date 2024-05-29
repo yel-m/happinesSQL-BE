@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum HappinessLevel {
-    VERY_LOW("매우 낮음"),
-    LOW("낮음"),
-    MEDIUM("보통"),
-    HIGH("높음"),
-    VERY_HIGH("매우 높음");
+    VERY_LOW("매우 낮음","😱"),
+    LOW("낮음","😐"),
+    MEDIUM("보통","😐"),
+    HIGH("높음", "🙂"),
+    VERY_HIGH("매우 높음", "😄");
     private final String viewName;
+    private final String emoji;
     public static HappinessLevel of(double happiness) {
         if (happiness >= 1 && happiness < 2) {
             return VERY_LOW;
@@ -27,6 +28,9 @@ public enum HappinessLevel {
     @JsonValue
     public String getViewName() {
         return viewName;
+    }
+    public String getEmoji() {
+        return emoji;
     }
 
 }
