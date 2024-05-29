@@ -13,10 +13,9 @@ public class TrendConverter {
                 .emoji(emoji)
                 .build();
     }
-    public static TrendPopularActivitiesResponseDto toTrendPopularActivitiesResponseDto(int ranking, Long activityId, String name, String emoji, Long times) {
+    public static TrendPopularActivitiesResponseDto toTrendPopularActivitiesResponseDto(int ranking, String name, String emoji, Long times) {
         return TrendPopularActivitiesResponseDto
                 .builder()
-                .activityId(activityId)
                 .ranking(ranking)
                 .times(times)
                 .name(name)

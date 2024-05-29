@@ -29,7 +29,7 @@ public class TrendPopularActivitiesService {
         for(int i = 0; i<popularActivities.size(); i++) {
             Activity activity = popularActivities.get(i);
             responseDtos.add(TrendConverter
-                    .toTrendPopularActivitiesResponseDto(ranking++, activity.getActivityId(), activity.getName(),activity.getEmoji(), times.get(i)));
+                    .toTrendPopularActivitiesResponseDto(ranking++, activity.getName(),activity.getEmoji(), times.get(i)));
         }
         return responseDtos;
     }

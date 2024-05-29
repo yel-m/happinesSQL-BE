@@ -9,14 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrendPopularActivitiesResponseDto {
     private int ranking;
-    private Long activityId;
     private String name;
     private String emoji;
     private Long times;
     @Builder
-    public TrendPopularActivitiesResponseDto(int ranking, Long activityId, String name, String emoji, Long times) {
+    public TrendPopularActivitiesResponseDto(int ranking, String name, String emoji, Long times) {
         this.ranking = ranking;
-        this.activityId = activityId;
         this.name = name;
         this.emoji = emoji;
         this.times = times;
