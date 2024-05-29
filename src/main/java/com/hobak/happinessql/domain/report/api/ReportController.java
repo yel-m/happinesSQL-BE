@@ -144,7 +144,7 @@ public class ReportController {
     public DataResponseDto<List<TimeOfDayHappinessDto>> getAllTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getAllTimeOfDayRankings(user);
-        return DataResponseDto.of(responseDto, "전체 활동 행복도 순위를 성공적으로 조회했습니다.");
+        return DataResponseDto.of(responseDto, "전체 시간대 행복도 순위를 성공적으로 조회했습니다.");
     }
 
     @Operation(summary = "[연간] 시간대 행복도 순위", description = "이번 해 시간대 행복도 순위를 제공합니다.")
@@ -152,7 +152,7 @@ public class ReportController {
     public DataResponseDto<List<TimeOfDayHappinessDto>> getYearlyTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getYearlyTimeOfDayRankings(user);
-        return DataResponseDto.of(responseDto, "연간 활동 행복도 순위를 성공적으로 조회했습니다.");
+        return DataResponseDto.of(responseDto, "연간 시간대 행복도 순위를 성공적으로 조회했습니다.");
     }
 
     @Operation(summary = "[월간] 시간대 행복도 순위", description = "이번 달 시간대 행복도 순위를 제공합니다.")
@@ -160,7 +160,7 @@ public class ReportController {
     public DataResponseDto<List<TimeOfDayHappinessDto>> getMonthlyTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getMonthlyTimeOfDayRankings(user);
-        return DataResponseDto.of(responseDto, "월간 활동 행복도 순위를 성공적으로 조회했습니다.");
+        return DataResponseDto.of(responseDto, "월간 시간대 행복도 순위를 성공적으로 조회했습니다.");
     }
 
 }
