@@ -49,6 +49,21 @@ public class ActivityHappinessAnalyzer {
             return activityRankings;
         }
 
+        activityRankings = getActivityRankings(records);
+
+        // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
+        while (activityRankings.size() < topCount) {
+            activityRankings.add(ReportConverter.toActivityHappinessDto(activityRankings.size() + 1, null, null));
+        }
+
+        return activityRankings.stream()
+                .limit(topCount)
+                .collect(Collectors.toList());
+    }
+
+    public static List<ActivityHappinessDto> getActivityRankings(List<Record> records) {
+        List<ActivityHappinessDto> activityRankings = new ArrayList<>();
+
         // 활동 그룹화 및 이모지 매핑
         Map<String, String> activityEmojiMap = getActivityEmojiMap(records);
 
@@ -61,16 +76,11 @@ public class ActivityHappinessAnalyzer {
         List<String> sortedActivities = sortActivities(activityAverageHappiness, activityFrequency);
 
         // 상위 N개의 활동 선정
-        for (int i = 0; i < Math.min(topCount, sortedActivities.size()); i++) {
+        for (int i = 0; i < sortedActivities.size(); i++) {
             String activity = sortedActivities.get(i);
             String emoji = activityEmojiMap.get(activity); // 이모지 가져오기
             ActivityHappinessDto activityDto = ReportConverter.toActivityHappinessDto(i + 1, activity, emoji);
             activityRankings.add(activityDto);
-        }
-
-        // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
-        while (activityRankings.size() < topCount) {
-            activityRankings.add(ReportConverter.toActivityHappinessDto(activityRankings.size() + 1, null, null));
         }
 
         return activityRankings;
