@@ -1,14 +1,8 @@
 package com.hobak.happinessql.domain.report.api;
 
 
-import com.hobak.happinessql.domain.report.application.ReportActivityRankingService;
-import com.hobak.happinessql.domain.report.application.ReportGraphService;
-import com.hobak.happinessql.domain.report.application.ReportLocationRankingService;
-import com.hobak.happinessql.domain.report.application.ReportSummaryService;
-import com.hobak.happinessql.domain.report.dto.ActivityHappinessDto;
-import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
-import com.hobak.happinessql.domain.report.dto.ReportGraphResponseDto;
-import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
+import com.hobak.happinessql.domain.report.application.*;
+import com.hobak.happinessql.domain.report.dto.*;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.response.DataResponseDto;
@@ -33,6 +27,7 @@ public class ReportController {
     private final ReportSummaryService reportSummaryService;
     private final ReportActivityRankingService reportActivityRankingService;
     private final ReportLocationRankingService reportLocationRankingService;
+    private final ReportTimeOfPeriodRankingService reportTimeOfPeriodRankingService;
     private final ReportGraphService reportGraphService;
     @Operation(summary = "[전체] 행복 종합 리포트", description = "전체 기간에서 언제, 어디에서, 무엇을 할 때 행복했는지에 대한 종합적인 리포트를 제공합니다.")
     @GetMapping("/all/summary")
@@ -141,6 +136,30 @@ public class ReportController {
     public DataResponseDto<List<ActivityHappinessDto>> getMonthlyActivityRankings(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<ActivityHappinessDto> responseDto = reportActivityRankingService.getMonthlyActivityRankings(user);
+        return DataResponseDto.of(responseDto, "월간 활동 행복도 순위를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "[전체] 시간대 행복도 순위", description = "전체 기록에서 시간대 행복도 순위를 제공합니다.")
+    @GetMapping("/all/ranking/time")
+    public DataResponseDto<List<TimeOfDayHappinessDto>> getAllTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getAllTimeOfDayRankings(user);
+        return DataResponseDto.of(responseDto, "전체 활동 행복도 순위를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "[연간] 시간대 행복도 순위", description = "이번 해 시간대 행복도 순위를 제공합니다.")
+    @GetMapping("/year/ranking/time")
+    public DataResponseDto<List<TimeOfDayHappinessDto>> getYearlyTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getYearlyTimeOfDayRankings(user);
+        return DataResponseDto.of(responseDto, "연간 활동 행복도 순위를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "[월간] 시간대 행복도 순위", description = "이번 달 시간대 행복도 순위를 제공합니다.")
+    @GetMapping("/month/ranking/time")
+    public DataResponseDto<List<TimeOfDayHappinessDto>> getMonthlyTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<TimeOfDayHappinessDto> responseDto = reportTimeOfPeriodRankingService.getMonthlyTimeOfDayRankings(user);
         return DataResponseDto.of(responseDto, "월간 활동 행복도 순위를 성공적으로 조회했습니다.");
     }
 
