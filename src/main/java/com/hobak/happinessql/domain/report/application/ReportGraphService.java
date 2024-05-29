@@ -37,8 +37,6 @@ public class ReportGraphService {
             else {
                 endDate = LocalDate.of(currentYear+1, 1, 1);
             }
-            System.out.println("startDate = " + startDate);
-            System.out.println("endDate = " + endDate);
             List<Record> monthlyRecords = recordRepository.findAllByCreatedAtBetweenAndUser(startDate.atStartOfDay(), endDate.atStartOfDay(), user);
             if (!monthlyRecords.isEmpty()) {
                 double sum = monthlyRecords.stream().mapToInt(Record::getHappiness).sum();
