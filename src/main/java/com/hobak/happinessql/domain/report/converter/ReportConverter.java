@@ -1,10 +1,8 @@
 package com.hobak.happinessql.domain.report.converter;
 
+import com.hobak.happinessql.domain.report.domain.HappinessLevel;
 import com.hobak.happinessql.domain.report.domain.TimePeriod;
-import com.hobak.happinessql.domain.report.dto.ActivityHappinessDto;
-import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
-import com.hobak.happinessql.domain.report.dto.ReportGraphResponseDto;
-import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
+import com.hobak.happinessql.domain.report.dto.*;
 
 import java.util.ArrayList;
 
@@ -35,6 +33,14 @@ public class ReportConverter {
         return ReportGraphResponseDto.builder()
                 .labels(labels)
                 .happiness(happiness)
+                .build();
+    }
+    public static AverageHappinessResponseDto toAverageHappinessResponseDto(double happiness, HappinessLevel level, String emoji) {
+        return AverageHappinessResponseDto
+                .builder()
+                .happiness(happiness)
+                .level(level)
+                .emoji(emoji)
                 .build();
     }
 }
