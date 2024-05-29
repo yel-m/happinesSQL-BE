@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum TimePeriod {
+public enum TimeOfDay {
     DAWN("새벽"),
     MORNING("아침"),
     AFTERNOON("낮"),
@@ -14,7 +14,7 @@ public enum TimePeriod {
 
     private final String viewName;
 
-    public static TimePeriod of(int hour) {
+    public static TimeOfDay of(int hour) {
         if (hour >= 0 && hour < 5) {
             return DAWN;
         } else if (hour >= 5 && hour < 9) {
@@ -29,8 +29,8 @@ public enum TimePeriod {
     }
 
     @JsonCreator
-    public static TimePeriod from(String value) {
-        for (TimePeriod status : TimePeriod.values()) {
+    public static TimeOfDay from(String value) {
+        for (TimeOfDay status : TimeOfDay.values()) {
             if (status.getViewName().equals(value)) {
                 return status;
             }

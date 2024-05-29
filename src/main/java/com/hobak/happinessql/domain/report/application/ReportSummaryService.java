@@ -3,7 +3,7 @@ package com.hobak.happinessql.domain.report.application;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
-import com.hobak.happinessql.domain.report.domain.TimePeriod;
+import com.hobak.happinessql.domain.report.domain.TimeOfDay;
 import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +45,9 @@ public class ReportSummaryService {
 
     private ReportSummaryResponseDto generateReportSummary(List<Record> records) {
         String location = LocationHappinessAnalyzer.getHappiestLocation(records);
-        TimePeriod timePeriod = TimePeriodHappinessAnalyzer.getHappiestTimePeriod(records);
+        TimeOfDay timeOfDay = TimeOfDayHappinessAnalyzer.getHappiestTimeOfDay(records);
         String activity = ActivityHappinessAnalyzer.getHappiestActivity(records);
 
-        return ReportConverter.toReportSummaryResponseDto(timePeriod, location, activity);
+        return ReportConverter.toReportSummaryResponseDto(timeOfDay, location, activity);
     }
 }

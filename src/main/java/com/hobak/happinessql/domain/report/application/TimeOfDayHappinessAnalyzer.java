@@ -1,31 +1,31 @@
 package com.hobak.happinessql.domain.report.application;
 
 import com.hobak.happinessql.domain.record.domain.Record;
-import com.hobak.happinessql.domain.report.domain.TimePeriod;
+import com.hobak.happinessql.domain.report.domain.TimeOfDay;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimePeriodHappinessAnalyzer {
+public class TimeOfDayHappinessAnalyzer {
 
-    public static TimePeriod getHappiestTimePeriod(List<Record> records) {
+    public static TimeOfDay getHappiestTimeOfDay(List<Record> records) {
 
         if (records == null || records.isEmpty()) {
             return null;
         }
 
-        Map<TimePeriod, List<Integer>> timePeriodHappinessMap = new HashMap<>();
+        Map<TimeOfDay, List<Integer>> timeOfDayHappinessMap = new HashMap<>();
 
         // 시간대별 행복도를 매핑
         for (Record record : records) {
-            TimePeriod timePeriod = TimePeriod.of(record.getCreatedAt().getHour());
+            TimeOfDay timeOfDay = TimeOfDay.of(record.getCreatedAt().getHour());
             Integer happiness = record.getHappiness();
 
-            timePeriodHappinessMap.computeIfAbsent(timePeriod, k -> new ArrayList<>()).add(happiness);
+            timeOfDayHappinessMap.computeIfAbsent(timeOfDay, k -> new ArrayList<>()).add(happiness);
         }
 
         // 평균 행복도 계산
-        Map<TimePeriod, Double> averageHappinessMap = timePeriodHappinessMap.entrySet().stream()
+        Map<TimeOfDay, Double> averageHappinessMap = timeOfDayHappinessMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> entry.getValue().stream().mapToInt(Integer::intValue).average().orElse(0)));
 
@@ -35,7 +35,7 @@ public class TimePeriodHappinessAnalyzer {
                 .orElse(Double.MIN_VALUE);
 
         // 최대 평균 행복도를 가진 시간대 후보들 필터링
-        List<TimePeriod> candidates = averageHappinessMap.entrySet().stream()
+        List<TimeOfDay> candidates = averageHappinessMap.entrySet().stream()
                 .filter(entry -> entry.getValue() == maxAverageHappiness)
                 .map(Map.Entry::getKey)
                 .toList();
@@ -46,7 +46,7 @@ public class TimePeriodHappinessAnalyzer {
 
         // 후보 중 빈도수가 가장 높은 시간대 찾기, 동일 빈도시 랜덤 선택
         return candidates.stream()
-                .max(Comparator.comparingInt(tp -> timePeriodHappinessMap.get(tp).size()))
+                .max(Comparator.comparingInt(tp -> timeOfDayHappinessMap.get(tp).size()))
                 .orElseGet(() -> candidates.get(new Random().nextInt(candidates.size())));
     }
 }
