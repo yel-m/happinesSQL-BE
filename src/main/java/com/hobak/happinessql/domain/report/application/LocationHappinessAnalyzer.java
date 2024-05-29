@@ -48,6 +48,20 @@ public class LocationHappinessAnalyzer {
             return locationRankings;
         }
 
+        locationRankings = getLocationRankings(records);
+        // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
+        while (locationRankings.size() < topCount) {
+            locationRankings.add(ReportConverter.toLocationHappinessDto(locationRankings.size() + 1, null));
+        }
+
+        return locationRankings.stream()
+                .limit(topCount)
+                .collect(Collectors.toList());
+    }
+
+    public static List<LocationHappinessDto> getLocationRankings(List<Record> records) {
+        List<LocationHappinessDto> locationRankings = new ArrayList<>();
+
         // 도시와 구를 기준으로 Record 그룹화
         Map<String, List<Record>> locationRecordsMap = groupRecordsByLocation(records);
 
@@ -59,15 +73,10 @@ public class LocationHappinessAnalyzer {
         List<String> sortedLocations = sortLocations(locationAverageHappiness, locationFrequency);
 
         // 상위 N개의 위치 선정
-        for (int i = 0; i < Math.min(topCount, sortedLocations.size()); i++) {
+        for (int i = 0; i < sortedLocations.size(); i++) {
             String location = sortedLocations.get(i);
             LocationHappinessDto locationDto = ReportConverter.toLocationHappinessDto(i + 1, location);
             locationRankings.add(locationDto);
-        }
-
-        // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
-        while (locationRankings.size() < topCount) {
-            locationRankings.add(ReportConverter.toLocationHappinessDto(locationRankings.size() + 1, null));
         }
 
         return locationRankings;

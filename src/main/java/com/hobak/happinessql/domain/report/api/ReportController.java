@@ -139,6 +139,30 @@ public class ReportController {
         return DataResponseDto.of(responseDto, "월간 활동 행복도 순위를 성공적으로 조회했습니다.");
     }
 
+    @Operation(summary = "[전체] 모든 위치의 행복도 순위", description = "전체 기록에서 모든 위치의 행복도 순위를 제공합니다.")
+    @GetMapping("/all/ranking/locations")
+    public DataResponseDto<List<LocationHappinessDto>> getAllLocationRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<LocationHappinessDto> responseDto = reportLocationRankingService.getAllLocationRankings(user);
+        return DataResponseDto.of(responseDto, "전체 위치 행복도 순위를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "[연간] 모든 위치의 행복도 순위", description = "이번 해 모든 위치의 행복도 순위를 제공합니다.")
+    @GetMapping("/year/ranking/locations")
+    public DataResponseDto<List<LocationHappinessDto>> getYearlyLocationRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<LocationHappinessDto> responseDto = reportLocationRankingService.getYearlyLocationRankings(user);
+        return DataResponseDto.of(responseDto, "연간 위치 행복도 순위를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "[월간] 모든 위치의 행복도 순위", description = "이번 달 모든 위치의 행복도 순위를 제공합니다.")
+    @GetMapping("/month/ranking/locations")
+    public DataResponseDto<List<LocationHappinessDto>> getMonthlyLocationRankings(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<LocationHappinessDto> responseDto = reportLocationRankingService.getMonthlyLocationRankings(user);
+        return DataResponseDto.of(responseDto, "월간 위치 행복도 순위를 성공적으로 조회했습니다.");
+    }
+  
     @Operation(summary = "[전체] 시간대 행복도 순위", description = "전체 기록에서 시간대 행복도 순위를 제공합니다.")
     @GetMapping("/all/ranking/time")
     public DataResponseDto<List<TimeOfDayHappinessDto>> getAllTimeOfDayRankings(@AuthenticationPrincipal UserDetails userDetails) {
