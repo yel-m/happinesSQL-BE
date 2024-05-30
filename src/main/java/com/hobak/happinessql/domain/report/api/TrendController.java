@@ -1,8 +1,8 @@
 package com.hobak.happinessql.domain.report.api;
 
-import com.hobak.happinessql.domain.report.application.TrendHappinessService;
+import com.hobak.happinessql.domain.report.application.AverageHappinessService;
 import com.hobak.happinessql.domain.report.application.TrendPopularActivitiesService;
-import com.hobak.happinessql.domain.report.dto.TrendHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.AverageHappinessResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendPopularActivitiesResponseDto;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,12 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/trend")
 public class TrendController {
-    private final TrendHappinessService trendHappinessService;
+    private final AverageHappinessService averageHappinessService;
     private final TrendPopularActivitiesService trendPopularActivitiesService;
     @Operation(summary = "대한민국 평균 행복지수", description = "전체 유저의 평균 행복지수와 그에 따른 수준을 판단합니다.")
     @GetMapping("/happiness")
-    public DataResponseDto<TrendHappinessResponseDto> getHappiness() {
-        TrendHappinessResponseDto responseDto = trendHappinessService.getTrendHappiness();
+    public DataResponseDto<AverageHappinessResponseDto> getHappiness() {
+        AverageHappinessResponseDto responseDto = averageHappinessService.getTrendHappiness();
         return DataResponseDto.of(responseDto, "대한민국 평균 행복지수를 성공적으로 조회했습니다.");
     }
     @Operation(summary = "오늘의 인기 활동 top3", description = "오늘 많이 기록된 활동의 이름과 기록 횟수를 조회합니다.")

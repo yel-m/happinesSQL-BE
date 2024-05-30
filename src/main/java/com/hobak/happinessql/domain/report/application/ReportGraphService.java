@@ -37,8 +37,6 @@ public class ReportGraphService {
             else {
                 endDate = LocalDate.of(currentYear+1, 1, 1);
             }
-            System.out.println("startDate = " + startDate);
-            System.out.println("endDate = " + endDate);
             List<Record> monthlyRecords = recordRepository.findAllByCreatedAtBetweenAndUser(startDate.atStartOfDay(), endDate.atStartOfDay(), user);
             if (!monthlyRecords.isEmpty()) {
                 double sum = monthlyRecords.stream().mapToInt(Record::getHappiness).sum();
@@ -60,8 +58,6 @@ public class ReportGraphService {
         LocalDate startOfWeek = startOfMonth.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         for(int week = 1; week<=5; week++) {
             LocalDate endOfWeek = startOfWeek.plusDays(7);
-            System.out.println("startOfWeek = " + startOfWeek);
-            System.out.println("endOfWeek = " + endOfWeek);
             List<Record> weeklyRecords = recordRepository.findAllByCreatedAtBetweenAndUser(startOfWeek.atStartOfDay(), endOfWeek.atStartOfDay(), user);
             if(!weeklyRecords.isEmpty()) {
                 double sum = weeklyRecords.stream().mapToInt(Record::getHappiness).sum();

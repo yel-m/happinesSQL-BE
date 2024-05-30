@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.report.converter;
 
+import com.hobak.happinessql.domain.report.domain.HappinessLevel;
 import com.hobak.happinessql.domain.report.domain.TimeOfDay;
 import com.hobak.happinessql.domain.report.dto.*;
 
@@ -34,11 +35,18 @@ public class ReportConverter {
                 .happiness(happiness)
                 .build();
     }
-
     public static TimeOfDayHappinessDto toTimeOfDayHappinessDto(int ranking, TimeOfDay timeOfDay) {
         return TimeOfDayHappinessDto.builder()
                 .ranking(ranking)
                 .timeOfDay(timeOfDay)
+                .build();
+    }
+    public static AverageHappinessResponseDto toAverageHappinessResponseDto(double happiness, HappinessLevel level, String emoji) {
+        return AverageHappinessResponseDto
+                .builder()
+                .happiness(happiness)
+                .level(level)
+                .emoji(emoji)
                 .build();
     }
 }

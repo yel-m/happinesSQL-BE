@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TrendHappinessResponseDto {
+public class AverageHappinessResponseDto {
     private double happiness;
     private HappinessLevel level;
     private String emoji;
     @Builder
-    public TrendHappinessResponseDto(double happiness, HappinessLevel level, String emoji){
+    public AverageHappinessResponseDto(double happiness, HappinessLevel level, String emoji){
         this.happiness = happiness;
         this.level = level;
         this.emoji = emoji;
