@@ -1,6 +1,5 @@
 package com.hobak.happinessql.domain.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
@@ -13,14 +12,13 @@ public enum Gender {
 
     private final String viewName;
 
-    @JsonCreator
     public static Gender from(String value) {
         for (Gender status : Gender.values()) {
             if (status.getViewName().equals(value)) {
                 return status;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Invalid format: " + value + ". Please use formats one of the following formats: '여성', '남성', '선택 안함'");
     }
 
     @JsonValue
