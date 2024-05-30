@@ -2,7 +2,7 @@ package com.hobak.happinessql.domain.report.application;
 
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
-import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
+import com.hobak.happinessql.domain.report.dto.LocationHappinessResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ import java.util.List;
 public class ReportLocationRankingService {
     private final RecordRepository recordRepository;
 
-    public List<LocationHappinessDto> getTop3AllHappiestLocations(User user) {
+    public List<LocationHappinessResponseDto> getTop3AllHappiestLocations(User user) {
         List<Record> records = recordRepository.findAllByUser(user);
         return LocationHappinessAnalyzer.getLocationRankings(records, 3);
     }
 
-    public List<LocationHappinessDto> getTop3AnnualHappiestLocations(User user) {
+    public List<LocationHappinessResponseDto> getTop3AnnualHappiestLocations(User user) {
         int currentYear = LocalDate.now().getYear();
         LocalDateTime startOfYear = LocalDateTime.of(currentYear, 1, 1, 0, 0);
         LocalDateTime endOfYear = LocalDateTime.of(currentYear, 12, 31, 23, 59, 59);
@@ -29,7 +29,7 @@ public class ReportLocationRankingService {
         return LocationHappinessAnalyzer.getLocationRankings(records, 3);
     }
 
-    public List<LocationHappinessDto> getTop3MonthlyHappiestLocations(User user) {
+    public List<LocationHappinessResponseDto> getTop3MonthlyHappiestLocations(User user) {
         LocalDate today = LocalDate.now();
         LocalDate startOfMonth = today.withDayOfMonth(1);
         LocalDate endOfMonth = today.withDayOfMonth(today.lengthOfMonth());
@@ -39,12 +39,12 @@ public class ReportLocationRankingService {
         return LocationHappinessAnalyzer.getLocationRankings(records, 3);
     }
 
-    public List<LocationHappinessDto> getAllLocationRankings(User user) {
+    public List<LocationHappinessResponseDto> getAllLocationRankings(User user) {
         List<Record> records = recordRepository.findAllByUser(user);
         return LocationHappinessAnalyzer.getLocationRankings(records);
     }
 
-    public List<LocationHappinessDto> getYearlyLocationRankings(User user) {
+    public List<LocationHappinessResponseDto> getYearlyLocationRankings(User user) {
         int currentYear = LocalDate.now().getYear();
         LocalDateTime startOfYear = LocalDateTime.of(currentYear, 1, 1, 0, 0);
         LocalDateTime endOfYear = LocalDateTime.of(currentYear, 12, 31, 23, 59, 59);
@@ -52,7 +52,7 @@ public class ReportLocationRankingService {
         return LocationHappinessAnalyzer.getLocationRankings(records);
     }
 
-    public List<LocationHappinessDto> getMonthlyLocationRankings(User user) {
+    public List<LocationHappinessResponseDto> getMonthlyLocationRankings(User user) {
         LocalDate today = LocalDate.now();
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate endOfMonth = LocalDate.now().withDayOfMonth(today.lengthOfMonth());
