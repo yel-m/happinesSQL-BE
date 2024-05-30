@@ -3,13 +3,13 @@ package com.hobak.happinessql.domain.user.converter;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.dto.SignUpDto;
 import com.hobak.happinessql.domain.user.dto.UserDto;
-import com.hobak.happinessql.domain.user.dto.UserInfoResponseDto;
+import com.hobak.happinessql.domain.user.dto.UserProfileResponseDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 
 public class UserConverter {
-    public static UserInfoResponseDto toUserInfoResponseDto(User user) {
-        return UserInfoResponseDto.builder()
+    public static UserProfileResponseDto toUserProfileResponseDto(User user) {
+        return UserProfileResponseDto.builder()
                 .userId(user.getUserId())
                 .name(user.getName())
                 .age(user.getAge())

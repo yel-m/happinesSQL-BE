@@ -33,17 +33,17 @@ public class UserController {
     @NonNull
     private PasswordEncoder passwordEncoder;
     @GetMapping("/profile")
-    public DataResponseDto<Object> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+    public DataResponseDto<Object> getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
-        UserInfoResponseDto userInfoResponseDto = UserConverter.toUserInfoResponseDto(user);
-        return DataResponseDto.of(userInfoResponseDto, "유저 프로필을 성공적으로 조회했습니다.");
+        UserProfileResponseDto userProfileResponseDto = UserConverter.toUserProfileResponseDto(user);
+        return DataResponseDto.of(userProfileResponseDto, "유저 프로필을 성공적으로 조회했습니다.");
     }
 
     @PutMapping("/profile")
-    public DataResponseDto<Object> updateUserInfo(@RequestBody @Valid UserProfileUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public DataResponseDto<Object> updateUserProfile(@RequestBody @Valid UserProfileUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         User updatedUser = userProfileService.updateUserProfile(user, requestDto);
-        UserInfoResponseDto responseDto = UserConverter.toUserInfoResponseDto(updatedUser);
+        UserProfileResponseDto responseDto = UserConverter.toUserProfileResponseDto(updatedUser);
 
         return DataResponseDto.of(responseDto, "유저 프로필을 성공적으로 수정했습니다.");
     }
