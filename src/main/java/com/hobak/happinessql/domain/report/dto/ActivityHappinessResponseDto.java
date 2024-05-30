@@ -20,7 +20,4 @@ public class ActivityHappinessResponseDto {
         this.activity = activity;
         this.emoji = emoji;
     }
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
-    }
 }

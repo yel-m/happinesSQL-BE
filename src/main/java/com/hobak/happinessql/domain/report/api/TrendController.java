@@ -32,16 +32,14 @@ public class TrendController {
 
     @Operation(summary = "대한민국 평균 행복지수", description = "전체 유저의 평균 행복지수와 그에 따른 수준을 판단합니다.")
     @GetMapping("/happiness")
-    public DataResponseDto<AverageHappinessResponseDto> getAverageHappiness(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userFindService.findByUserDetails(userDetails);
+    public DataResponseDto<AverageHappinessResponseDto> getAverageHappiness() {
         AverageHappinessResponseDto responseDto = averageHappinessService.getTrendHappiness();
         return DataResponseDto.of(responseDto, "대한민국 평균 행복지수를 성공적으로 조회했습니다.");
     }
     @Operation(summary = "오늘의 인기 활동 top3", description = "오늘 많이 기록된 활동의 이름과 기록 횟수를 조회합니다.")
     @GetMapping("/popular")
-    public DataResponseDto<List<TrendPopularActivitiyResponseDto>> getPopularActivities(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userFindService.findByUserDetails(userDetails);
-        List<TrendPopularActivitiyResponseDto> responseDto = trendPopularActivityService.getPopularActivities(user);
+    public DataResponseDto<List<TrendPopularActivitiyResponseDto>> getPopularActivities() {
+        List<TrendPopularActivitiyResponseDto> responseDto = trendPopularActivityService.getPopularActivities();
         return DataResponseDto.of(responseDto, "오늘의 인기 활동을 성공적으로 조회했습니다.");
     }
 

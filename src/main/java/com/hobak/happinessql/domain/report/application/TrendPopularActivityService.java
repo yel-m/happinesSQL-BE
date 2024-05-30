@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrendPopularActivityService {
     private final RecordRepository recordRepository;
-    public List<TrendPopularActivitiyResponseDto> getPopularActivities(User user){
+    public List<TrendPopularActivitiyResponseDto> getPopularActivities(){
         LocalDate today = LocalDate.now();
         List<Object[]> results = recordRepository.findPopularActivities(today.atStartOfDay());
         List<Activity> popularActivities = results.stream()
