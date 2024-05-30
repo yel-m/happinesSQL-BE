@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TimeOfDayHappinessDto {
+public class TimeOfDayHappinessResponseDto {
 
     private int ranking;
 
@@ -18,7 +18,7 @@ public class TimeOfDayHappinessDto {
     private TimeOfDay timeOfDay;
 
     @Builder
-    public TimeOfDayHappinessDto(int ranking, TimeOfDay timeOfDay) {
+    public TimeOfDayHappinessResponseDto(int ranking, TimeOfDay timeOfDay) {
         this.ranking = ranking;
         this.timeOfDay = timeOfDay;
     }
