@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ActivityHappinessResponseDto {
+public class ActivityRankingResponseDto {
 
     private int ranking;
     private String activity;
     private String emoji;
 
     @Builder
-    public ActivityHappinessResponseDto(int ranking, String activity, String emoji) {
+    public ActivityRankingResponseDto(int ranking, String activity, String emoji) {
         this.ranking = ranking;
         this.activity = activity;
         this.emoji = emoji;

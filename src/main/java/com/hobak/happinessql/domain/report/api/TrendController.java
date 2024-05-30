@@ -6,7 +6,7 @@ import com.hobak.happinessql.domain.report.application.TrendRecommendService;
 import com.hobak.happinessql.domain.report.application.TrendSummaryService;
 import com.hobak.happinessql.domain.report.domain.AgeGroup;
 import com.hobak.happinessql.domain.report.dto.AverageHappinessResponseDto;
-import com.hobak.happinessql.domain.report.dto.SummaryHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.SummaryResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendPopularActivitiyResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendRecommendActivityResponseDto;
 import com.hobak.happinessql.domain.user.application.UserFindService;
@@ -15,7 +15,6 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,7 +64,7 @@ public class TrendController {
     })
     @GetMapping("/summary")
     public DataResponseDto<Object> getSummary(@RequestParam(required = false) AgeGroup ageGroup, @RequestParam(required = false) Gender gender) {
-        SummaryHappinessResponseDto responseDto = trendSummaryService.getSummary(ageGroup, gender);
+        SummaryResponseDto responseDto = trendSummaryService.getSummary(ageGroup, gender);
         if(responseDto == null) return DataResponseDto.of("아직은 데이터가 없어요.", "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
         return DataResponseDto.of(responseDto, "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
     }

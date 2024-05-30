@@ -6,7 +6,7 @@ import com.hobak.happinessql.domain.record.repository.RecordRepository;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
 import com.hobak.happinessql.domain.report.domain.AgeGroup;
 import com.hobak.happinessql.domain.report.domain.TimeOfDay;
-import com.hobak.happinessql.domain.report.dto.SummaryHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.SummaryResponseDto;
 import com.hobak.happinessql.domain.user.domain.Gender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class TrendSummaryService {
 
     private final RecordRepository recordRepository;
 
-    public SummaryHappinessResponseDto getSummary(AgeGroup ageGroup, Gender gender) {
+    public SummaryResponseDto getSummary(AgeGroup ageGroup, Gender gender) {
         List<Record> records = getFilteredRecords(ageGroup, gender);
         return (!records.isEmpty()) ? generateTrendSummary(records) : null;
     }
@@ -36,12 +36,12 @@ public class TrendSummaryService {
         }
     }
 
-    private SummaryHappinessResponseDto generateTrendSummary(List<Record> records) {
+    private SummaryResponseDto generateTrendSummary(List<Record> records) {
         String location = LocationHappinessAnalyzer.getHappiestLocation(records);
         TimeOfDay timeOfDay = TimeOfDayHappinessAnalyzer.getHappiestTimeOfDay(records);
         String activity = ActivityHappinessAnalyzer.getHappiestActivity(records);
 
-        return ReportConverter.toSummaryHappinessResponseDto(timeOfDay, location, activity);
+        return ReportConverter.toSummaryResponseDto(timeOfDay, location, activity);
     }
 
 }
