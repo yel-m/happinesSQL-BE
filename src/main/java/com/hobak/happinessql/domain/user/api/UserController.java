@@ -10,6 +10,8 @@ import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.domain.user.dto.*;
 import com.hobak.happinessql.global.auth.JwtToken;
 import com.hobak.happinessql.global.response.DataResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+@Tag(name="User", description = "유저 관련 REST API에 대한 명세를 제공합니다.")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +36,8 @@ public class UserController {
 
     @NonNull
     private PasswordEncoder passwordEncoder;
+
+    @Operation(summary = "유저 프로필 조회", description = "유저의 프로필을 조회합니다.")
     @GetMapping("/profile")
     public DataResponseDto<Object> getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
@@ -39,6 +45,7 @@ public class UserController {
         return DataResponseDto.of(userProfileResponseDto, "유저 프로필을 성공적으로 조회했습니다.");
     }
 
+    @Operation(summary = "유저 프로필 수정", description = "유저의 프로필을 수정합니다.")
     @PutMapping("/profile")
     public DataResponseDto<Object> updateUserProfile(@RequestBody @Valid UserProfileUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
@@ -47,6 +54,8 @@ public class UserController {
 
         return DataResponseDto.of(responseDto, "유저 프로필을 성공적으로 수정했습니다.");
     }
+
+    @Operation(summary = "로그인", description = "사용자가 서비스에 로그인하는 데 사용됩니다")
     @PostMapping("/login")
     public DataResponseDto<JwtToken> signIn(@RequestBody SignInDto signInDto) {
         UserDetails user = customUserDetailsService.loadUserByUsername(signInDto.getUsername());
@@ -58,6 +67,7 @@ public class UserController {
 
     }
 
+    @Operation(summary = "회원가입", description = "사용자가 서비스에 회원가입하는 데 사용됩니다")
     @PostMapping("/sign-up")
     public DataResponseDto<Object> signUp(@RequestBody SignUpDto signUpDto){
         UserDto savedUserDto = userService.signUp(signUpDto);
