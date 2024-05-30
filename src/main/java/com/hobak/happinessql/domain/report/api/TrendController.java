@@ -44,7 +44,7 @@ public class TrendController {
     }
 
     @Operation(summary = "오늘의 추천 활동", description = "오늘의 추천 활동을 조회합니다. 행복도가 5 이상인 활동 중에서 랜덤으로 하나를 추천받을 수 있습니다.")
-    @GetMapping("/recommand")
+    @GetMapping("/recommend")
     public DataResponseDto<List<TrendRecommendActivityResponseDto>> getRecommendedActivities(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<TrendRecommendActivityResponseDto> responseDto = trendRecommendService.getRecommendActivities(user);
