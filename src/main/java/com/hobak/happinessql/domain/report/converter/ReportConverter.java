@@ -15,16 +15,16 @@ public class ReportConverter {
                 .build();
     }
 
-    public static ActivityHappinessDto toActivityHappinessDto(int ranking, String activity, String emoji) {
-        return ActivityHappinessDto.builder()
+    public static ActivityHappinessResponseDto toActivityHappinessResponseDto(int ranking, String activity, String emoji) {
+        return ActivityHappinessResponseDto.builder()
                 .ranking(ranking)
                 .activity(activity)
                 .emoji(emoji)
                 .build();
     }
 
-    public static LocationHappinessDto toLocationHappinessDto(int ranking, String location) {
-        return LocationHappinessDto.builder()
+    public static LocationHappinessResponseDto toLocationHappinessResponseDto(int ranking, String location) {
+        return LocationHappinessResponseDto.builder()
                 .ranking(ranking)
                 .location(location)
                 .build();
@@ -35,8 +35,8 @@ public class ReportConverter {
                 .happiness(happiness)
                 .build();
     }
-    public static TimeOfDayHappinessDto toTimeOfDayHappinessDto(int ranking, TimeOfDay timeOfDay) {
-        return TimeOfDayHappinessDto.builder()
+    public static TimeOfDayHappinessResponseDto toTimeOfDayHappinessResponseDto(int ranking, TimeOfDay timeOfDay) {
+        return TimeOfDayHappinessResponseDto.builder()
                 .ranking(ranking)
                 .timeOfDay(timeOfDay)
                 .build();

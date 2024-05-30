@@ -2,7 +2,7 @@ package com.hobak.happinessql.domain.report.application;
 
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
-import com.hobak.happinessql.domain.report.dto.LocationHappinessDto;
+import com.hobak.happinessql.domain.report.dto.LocationHappinessResponseDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,12 +38,12 @@ public class LocationHappinessAnalyzer {
         }
     }
 
-    public static List<LocationHappinessDto> getLocationRankings(List<Record> records, int topCount) {
-        List<LocationHappinessDto> locationRankings = new ArrayList<>();
+    public static List<LocationHappinessResponseDto> getLocationRankings(List<Record> records, int topCount) {
+        List<LocationHappinessResponseDto> locationRankings = new ArrayList<>();
         if (records == null || records.isEmpty()) {
             // 데이터가 없는 경우에도 빈 LocationHappinessDto 객체를 topCount만큼 추가
             for (int i = 0; i < topCount; i++) {
-                locationRankings.add(ReportConverter.toLocationHappinessDto(i + 1, null));
+                locationRankings.add(ReportConverter.toLocationHappinessResponseDto(i + 1, null));
             }
             return locationRankings;
         }
@@ -51,7 +51,7 @@ public class LocationHappinessAnalyzer {
         locationRankings = getLocationRankings(records);
         // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
         while (locationRankings.size() < topCount) {
-            locationRankings.add(ReportConverter.toLocationHappinessDto(locationRankings.size() + 1, null));
+            locationRankings.add(ReportConverter.toLocationHappinessResponseDto(locationRankings.size() + 1, null));
         }
 
         return locationRankings.stream()
@@ -59,8 +59,8 @@ public class LocationHappinessAnalyzer {
                 .collect(Collectors.toList());
     }
 
-    public static List<LocationHappinessDto> getLocationRankings(List<Record> records) {
-        List<LocationHappinessDto> locationRankings = new ArrayList<>();
+    public static List<LocationHappinessResponseDto> getLocationRankings(List<Record> records) {
+        List<LocationHappinessResponseDto> locationRankings = new ArrayList<>();
 
         // 도시와 구를 기준으로 Record 그룹화
         Map<String, List<Record>> locationRecordsMap = groupRecordsByLocation(records);
@@ -75,7 +75,7 @@ public class LocationHappinessAnalyzer {
         // 상위 N개의 위치 선정
         for (int i = 0; i < sortedLocations.size(); i++) {
             String location = sortedLocations.get(i);
-            LocationHappinessDto locationDto = ReportConverter.toLocationHappinessDto(i + 1, location);
+            LocationHappinessResponseDto locationDto = ReportConverter.toLocationHappinessResponseDto(i + 1, location);
             locationRankings.add(locationDto);
         }
 

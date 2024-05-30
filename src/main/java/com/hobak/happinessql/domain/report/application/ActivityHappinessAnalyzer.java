@@ -2,7 +2,9 @@ package com.hobak.happinessql.domain.report.application;
 
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
-import com.hobak.happinessql.domain.report.dto.ActivityHappinessDto;
+import com.hobak.happinessql.domain.report.converter.TrendConverter;
+import com.hobak.happinessql.domain.report.dto.ActivityHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.TrendRecommendActivityResponseDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,13 +40,13 @@ public class ActivityHappinessAnalyzer {
         }
     }
 
-    public static List<ActivityHappinessDto> getActivityRankings(List<Record> records, int topCount) {
-        List<ActivityHappinessDto> activityRankings = new ArrayList<>();
+    public static List<ActivityHappinessResponseDto> getActivityRankings(List<Record> records, int topCount) {
+        List<ActivityHappinessResponseDto> activityRankings = new ArrayList<>();
 
         if (records == null || records.isEmpty()) {
             // 데이터가 없는 경우에도 빈 ActivityHappinessDto 객체를 topCount만큼 추가
             for (int i = 0; i < topCount; i++) {
-                activityRankings.add(ReportConverter.toActivityHappinessDto(i + 1, null, null));
+                activityRankings.add(ReportConverter.toActivityHappinessResponseDto(i + 1, null, null));
             }
             return activityRankings;
         }
@@ -53,7 +55,7 @@ public class ActivityHappinessAnalyzer {
 
         // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
         while (activityRankings.size() < topCount) {
-            activityRankings.add(ReportConverter.toActivityHappinessDto(activityRankings.size() + 1, null, null));
+            activityRankings.add(ReportConverter.toActivityHappinessResponseDto(activityRankings.size() + 1, null, null));
         }
 
         return activityRankings.stream()
@@ -61,8 +63,8 @@ public class ActivityHappinessAnalyzer {
                 .collect(Collectors.toList());
     }
 
-    public static List<ActivityHappinessDto> getActivityRankings(List<Record> records) {
-        List<ActivityHappinessDto> activityRankings = new ArrayList<>();
+    public static List<ActivityHappinessResponseDto> getActivityRankings(List<Record> records) {
+        List<ActivityHappinessResponseDto> activityRankings = new ArrayList<>();
 
         // 활동 그룹화 및 이모지 매핑
         Map<String, String> activityEmojiMap = getActivityEmojiMap(records);
@@ -79,11 +81,54 @@ public class ActivityHappinessAnalyzer {
         for (int i = 0; i < sortedActivities.size(); i++) {
             String activity = sortedActivities.get(i);
             String emoji = activityEmojiMap.get(activity); // 이모지 가져오기
-            ActivityHappinessDto activityDto = ReportConverter.toActivityHappinessDto(i + 1, activity, emoji);
+            ActivityHappinessResponseDto activityDto = ReportConverter.toActivityHappinessResponseDto(i + 1, activity, emoji);
             activityRankings.add(activityDto);
         }
 
         return activityRankings;
+    }
+
+    public static List<TrendRecommendActivityResponseDto> getRandomHappyActivities(List<Record> records, int count) {
+
+        List<TrendRecommendActivityResponseDto> recommendations = new ArrayList<>();
+
+        if (records == null || records.isEmpty()) {
+            // 데이터가 없는 경우에도 빈 TrendRecommendActivityResponseDto 객체를 count 만큼 추가
+            for (int i = 0; i < count; i++) {
+                recommendations.add(TrendConverter.toTrendRecommendActivityResponseDto(null, null));
+            }
+            return recommendations;
+        }
+        // 행복도가 5 이상인 활동 필터링
+        List<Record> happyRecords = records.stream()
+                .filter(record -> record.getHappiness() >= 5)
+                .collect(Collectors.toList());
+
+        // 각 활동별로 그룹화
+        Map<String, List<Record>> activityRecordsMap = groupRecordsByActivity(happyRecords);
+
+        // 랜덤으로 활동 선택
+        Random random = new Random();
+        List<String> activities = new ArrayList<>(activityRecordsMap.keySet());
+        Collections.shuffle(activities); // 랜덤으로 섞기
+
+        // 활동이 count개 이상인지 확인하고, 최대 count 개 선택
+        int limit = Math.min(count, activities.size());
+        for (int i = 0; i < limit; i++) {
+            String activity = activities.get(i);
+            List<Record> recordsForActivity = activityRecordsMap.get(activity);
+            if (!recordsForActivity.isEmpty()) {
+                Record record = recordsForActivity.get(random.nextInt(recordsForActivity.size()));
+                recommendations.add(new TrendRecommendActivityResponseDto(activity, record.getActivity().getEmoji()));
+            }
+        }
+
+        // 만약 count보다 적게 선정된 경우, 나머지 빈 항목 추가
+        while (recommendations.size() < count) {
+            recommendations.add(TrendConverter.toTrendRecommendActivityResponseDto(null, null));
+        }
+
+        return recommendations;
     }
 
     private static Map<String, List<Record>> groupRecordsByActivity(List<Record> records) {
