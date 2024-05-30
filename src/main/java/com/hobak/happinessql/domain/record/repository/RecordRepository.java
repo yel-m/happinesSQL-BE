@@ -21,7 +21,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     @Query("SELECT r.activity, COUNT(r) as count FROM Record r WHERE r.createdAt >= :time GROUP BY r.activity ORDER BY count DESC limit 3")
     List<Object[]> findPopularActivities(@Param("time")LocalDateTime time);
 
-    @Query("SELECT r FROM Record r WHERE r.user.id != :userId")
+    @Query("SELECT r FROM Record r WHERE r.user.userId != :userId")
     List<Record> findAllExceptUser(@Param("userId") Long userId);
 
 }
