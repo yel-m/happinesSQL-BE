@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReportSummaryResponseDto {
+public class SummaryHappinessResponseDto {
 
     @JsonProperty("time_of_day")
     private TimeOfDay timeOfDay;
@@ -20,7 +20,7 @@ public class ReportSummaryResponseDto {
     private String activity;
 
     @Builder
-    public ReportSummaryResponseDto(TimeOfDay timeOfDay, String location, String activity) {
+    public SummaryHappinessResponseDto(TimeOfDay timeOfDay, String location, String activity) {
         this.timeOfDay = timeOfDay;
         this.location = location;
         this.activity = activity;

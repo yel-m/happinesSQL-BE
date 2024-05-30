@@ -4,7 +4,7 @@ import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
 import com.hobak.happinessql.domain.report.domain.TimeOfDay;
-import com.hobak.happinessql.domain.report.dto.ReportSummaryResponseDto;
+import com.hobak.happinessql.domain.report.dto.SummaryHappinessResponseDto;
 import com.hobak.happinessql.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class ReportSummaryService {
 
     private final RecordRepository recordRepository;
 
-    public ReportSummaryResponseDto getAllSummary(User user) {
+    public SummaryHappinessResponseDto getAllSummary(User user) {
         List<Record> records = recordRepository.findAllByUser(user);
         return generateReportSummary(records);
     }
 
-    public ReportSummaryResponseDto getAnnualSummary(User user) {
+    public SummaryHappinessResponseDto getAnnualSummary(User user) {
         int currentYear = LocalDate.now().getYear();
         LocalDateTime startOfYear = LocalDateTime.of(currentYear, 1, 1, 0, 0);
         LocalDateTime endOfYear = LocalDateTime.of(currentYear, 12, 31, 23, 59, 59);
@@ -34,7 +34,7 @@ public class ReportSummaryService {
         return generateReportSummary(annualRecords);
     }
 
-    public ReportSummaryResponseDto getMonthlySummary(User user) {
+    public SummaryHappinessResponseDto getMonthlySummary(User user) {
         LocalDate today = LocalDate.now();
         LocalDateTime startOfMonth = today.withDayOfMonth(1).atStartOfDay();
         LocalDateTime endOfMonth = today.withDayOfMonth(today.lengthOfMonth()).atTime(23, 59, 59);
@@ -43,11 +43,11 @@ public class ReportSummaryService {
         return generateReportSummary(monthlyRecords);
     }
 
-    private ReportSummaryResponseDto generateReportSummary(List<Record> records) {
+    private SummaryHappinessResponseDto generateReportSummary(List<Record> records) {
         String location = LocationHappinessAnalyzer.getHappiestLocation(records);
         TimeOfDay timeOfDay = TimeOfDayHappinessAnalyzer.getHappiestTimeOfDay(records);
         String activity = ActivityHappinessAnalyzer.getHappiestActivity(records);
 
-        return ReportConverter.toReportSummaryResponseDto(timeOfDay, location, activity);
+        return ReportConverter.toSummaryHappinessResponseDto(timeOfDay, location, activity);
     }
 }

@@ -7,8 +7,8 @@ import com.hobak.happinessql.domain.report.dto.*;
 import java.util.ArrayList;
 
 public class ReportConverter {
-    public static ReportSummaryResponseDto toReportSummaryResponseDto(TimeOfDay timeOfDay, String location, String activity) {
-        return ReportSummaryResponseDto.builder()
+    public static SummaryHappinessResponseDto toSummaryHappinessResponseDto(TimeOfDay timeOfDay, String location, String activity) {
+        return SummaryHappinessResponseDto.builder()
                 .activity(activity)
                 .location(location)
                 .timeOfDay(timeOfDay)
