@@ -4,11 +4,14 @@ import com.hobak.happinessql.domain.user.application.*;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.security.Key;
@@ -20,10 +23,12 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private final Key key;
     private final CustomUserDetailsService customUserDetailsService;
-    public JwtTokenProvider(@Value("${jwt.secret}")String secretKey, CustomUserDetailsService customUserDetailsService){
+    private final UserFindService userFindService;
+    public JwtTokenProvider(@Value("${jwt.secret}")String secretKey, CustomUserDetailsService customUserDetailsService, UserFindService userFindService){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.customUserDetailsService = customUserDetailsService;
+        this.userFindService = userFindService;
     }
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
     public JwtToken generateToken(Authentication authentication) {
@@ -49,10 +54,15 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
+        // CustomUserDetails 객체에서 name 가져오기
+        User userDetails = (User) authentication.getPrincipal();
+        String name = userFindService.findByUserDetails(userDetails).getName();
+
         return JwtToken.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .name(name)
                 .build();
     }
 
