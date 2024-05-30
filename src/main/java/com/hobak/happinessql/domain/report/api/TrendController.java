@@ -51,12 +51,12 @@ public class TrendController {
         return DataResponseDto.of(responseDto, "오늘의 인기 활동을 성공적으로 조회했습니다.");
     }
 
-    @Operation(summary = "오늘의 추천 활동", description = "오늘의 추천 활동을 조회합니다. 행복도가 5 이상인 활동 중에서 랜덤으로 하나를 추천받을 수 있습니다.")
+    @Operation(summary = "추천 활동", description = "추천 활동을 조회합니다. 행복도가 5 이상인 활동 중에서 랜덤으로 하나를 추천받을 수 있습니다.")
     @GetMapping("/recommend")
     public DataResponseDto<List<TrendRecommendActivityResponseDto>> getRecommendedActivities(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userFindService.findByUserDetails(userDetails);
         List<TrendRecommendActivityResponseDto> responseDto = trendRecommendService.getRecommendActivities(user);
-        return DataResponseDto.of(responseDto, "오늘의 인기 활동을 성공적으로 조회했습니다.");
+        return DataResponseDto.of(responseDto, "추천 활동을 성공적으로 조회했습니다.");
     }
 
     @Operation(summary = "연령대와 나이에 따른 행복 종합 리포트", description = "연령대와 나이를 쿼리 파라미터로 받아 그에 해당하는 행복 종합 리포트를 제공합니다. 만약 데이터가 없을 경우 data에 '아직은 데이터가 없습니다.' 문자열을 반환합니다.",
