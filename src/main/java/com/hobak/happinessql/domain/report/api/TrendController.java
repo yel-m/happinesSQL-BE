@@ -49,6 +49,5 @@ public class TrendController {
         User user = userFindService.findByUserDetails(userDetails);
         List<TrendRecommendActivityResponseDto> responseDto = trendRecommendService.getRecommendActivities(user);
         return DataResponseDto.of(responseDto, "추천 활동을 성공적으로 조회했습니다.");
-        return DataResponseDto.of(responseDto, "오늘의 인기 활동을 성공적으로 조회했습니다.");
     }
 }
