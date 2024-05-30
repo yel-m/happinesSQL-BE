@@ -1,6 +1,7 @@
 package com.hobak.happinessql.domain.record.repository;
 
 import com.hobak.happinessql.domain.record.domain.Record;
+import com.hobak.happinessql.domain.user.domain.Gender;
 import com.hobak.happinessql.domain.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,9 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     @Query("SELECT r FROM Record r WHERE r.user.userId != :userId")
     List<Record> findAllExceptUser(@Param("userId") Long userId);
 
+    List<Record> findByUserGender(Gender gender);
+
+    List<Record> findByUserAgeBetween(int minAge, int maxAge);
+
+    List<Record> findByUserAgeBetweenAndUserGender(int minAge, int maxAge, Gender gender);
 }
