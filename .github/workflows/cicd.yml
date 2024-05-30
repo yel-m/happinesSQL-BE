@@ -3,6 +3,8 @@ name: HappinesSQL CI/CD
 
 # 2. 워크플로가 시작될 조건 지정
 on:
+  push:
+    branches:  [ develop ]
   pull_request:
     branches: [ develop ]
     types: [ closed ]
