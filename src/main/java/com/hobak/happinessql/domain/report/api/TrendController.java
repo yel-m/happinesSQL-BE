@@ -3,19 +3,25 @@ package com.hobak.happinessql.domain.report.api;
 import com.hobak.happinessql.domain.report.application.AverageHappinessService;
 import com.hobak.happinessql.domain.report.application.TrendPopularActivityService;
 import com.hobak.happinessql.domain.report.application.TrendRecommendService;
+import com.hobak.happinessql.domain.report.application.TrendSummaryService;
+import com.hobak.happinessql.domain.report.domain.AgeGroup;
 import com.hobak.happinessql.domain.report.dto.AverageHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.SummaryResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendPopularActivitiyResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendRecommendActivityResponseDto;
 import com.hobak.happinessql.domain.user.application.UserFindService;
+import com.hobak.happinessql.domain.user.domain.Gender;
 import com.hobak.happinessql.domain.user.domain.User;
 import com.hobak.happinessql.global.response.DataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,6 +35,7 @@ public class TrendController {
     private final AverageHappinessService averageHappinessService;
     private final TrendPopularActivityService trendPopularActivityService;
     private final TrendRecommendService trendRecommendService;
+    private final TrendSummaryService trendSummaryService;
 
     @Operation(summary = "대한민국 평균 행복지수", description = "전체 유저의 평균 행복지수와 그에 따른 수준을 판단합니다.")
     @GetMapping("/happiness")
@@ -49,5 +56,16 @@ public class TrendController {
         User user = userFindService.findByUserDetails(userDetails);
         List<TrendRecommendActivityResponseDto> responseDto = trendRecommendService.getRecommendActivities(user);
         return DataResponseDto.of(responseDto, "추천 활동을 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "연령대와 나이에 따른 행복 종합 리포트", description = "연령대와 나이를 쿼리 파라미터로 받아 그에 해당하는 행복 종합 리포트를 제공합니다. 만약 데이터가 없을 경우 data에 '아직은 데이터가 없습니다.' 문자열을 반환합니다.",
+            parameters = {@Parameter(name="ageGroup", description = "지정하지 않으면 전체 연령으로 자동 설정됩니다."),
+            @Parameter(name="gender", description = "gender를 지정하지 않으면 전체로 자동 설정됩니다.")
+    })
+    @GetMapping("/summary")
+    public DataResponseDto<Object> getSummary(@RequestParam(required = false) AgeGroup ageGroup, @RequestParam(required = false) Gender gender) {
+        SummaryResponseDto responseDto = trendSummaryService.getSummary(ageGroup, gender);
+        if(responseDto == null) return DataResponseDto.of("아직은 데이터가 없어요.", "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
+        return DataResponseDto.of(responseDto, "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
     }
 }

@@ -2,6 +2,7 @@ package com.hobak.happinessql.domain.report.domain;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 public enum HappinessLevel {
@@ -11,6 +12,8 @@ public enum HappinessLevel {
     HIGH("높음", "🙂"),
     VERY_HIGH("매우 높음", "😄");
     private final String viewName;
+
+    @Getter
     private final String emoji;
     public static HappinessLevel of(double happiness) {
         if (happiness >= 1 && happiness < 2) {
@@ -28,9 +31,6 @@ public enum HappinessLevel {
     @JsonValue
     public String getViewName() {
         return viewName;
-    }
-    public String getEmoji() {
-        return emoji;
     }
 
 }

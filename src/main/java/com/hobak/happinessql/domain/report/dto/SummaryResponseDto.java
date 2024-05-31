@@ -10,16 +10,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TimeOfDayHappinessResponseDto {
-
-    private int ranking;
+public class SummaryResponseDto {
 
     @JsonProperty("time_of_day")
     private TimeOfDay timeOfDay;
 
+    private String location;
+
+    private String activity;
+
     @Builder
-    public TimeOfDayHappinessResponseDto(int ranking, TimeOfDay timeOfDay) {
-        this.ranking = ranking;
+    public SummaryResponseDto(TimeOfDay timeOfDay, String location, String activity) {
         this.timeOfDay = timeOfDay;
+        this.location = location;
+        this.activity = activity;
     }
 }

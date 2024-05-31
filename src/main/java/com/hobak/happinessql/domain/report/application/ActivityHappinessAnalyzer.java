@@ -3,7 +3,7 @@ package com.hobak.happinessql.domain.report.application;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
 import com.hobak.happinessql.domain.report.converter.TrendConverter;
-import com.hobak.happinessql.domain.report.dto.ActivityHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.ActivityRankingResponseDto;
 import com.hobak.happinessql.domain.report.dto.TrendRecommendActivityResponseDto;
 
 import java.util.*;
@@ -40,13 +40,13 @@ public class ActivityHappinessAnalyzer {
         }
     }
 
-    public static List<ActivityHappinessResponseDto> getActivityRankings(List<Record> records, int topCount) {
-        List<ActivityHappinessResponseDto> activityRankings = new ArrayList<>();
+    public static List<ActivityRankingResponseDto> getActivityRankings(List<Record> records, int topCount) {
+        List<ActivityRankingResponseDto> activityRankings = new ArrayList<>();
 
         if (records == null || records.isEmpty()) {
             // 데이터가 없는 경우에도 빈 ActivityHappinessDto 객체를 topCount만큼 추가
             for (int i = 0; i < topCount; i++) {
-                activityRankings.add(ReportConverter.toActivityHappinessResponseDto(i + 1, null, null));
+                activityRankings.add(ReportConverter.toActivityRankingResponseDto(i + 1, null, null));
             }
             return activityRankings;
         }
@@ -55,7 +55,7 @@ public class ActivityHappinessAnalyzer {
 
         // 만약 topCount보다 적게 선정된 경우, 나머지 빈 항목 추가
         while (activityRankings.size() < topCount) {
-            activityRankings.add(ReportConverter.toActivityHappinessResponseDto(activityRankings.size() + 1, null, null));
+            activityRankings.add(ReportConverter.toActivityRankingResponseDto(activityRankings.size() + 1, null, null));
         }
 
         return activityRankings.stream()
@@ -63,8 +63,8 @@ public class ActivityHappinessAnalyzer {
                 .collect(Collectors.toList());
     }
 
-    public static List<ActivityHappinessResponseDto> getActivityRankings(List<Record> records) {
-        List<ActivityHappinessResponseDto> activityRankings = new ArrayList<>();
+    public static List<ActivityRankingResponseDto> getActivityRankings(List<Record> records) {
+        List<ActivityRankingResponseDto> activityRankings = new ArrayList<>();
 
         // 활동 그룹화 및 이모지 매핑
         Map<String, String> activityEmojiMap = getActivityEmojiMap(records);
@@ -81,7 +81,7 @@ public class ActivityHappinessAnalyzer {
         for (int i = 0; i < sortedActivities.size(); i++) {
             String activity = sortedActivities.get(i);
             String emoji = activityEmojiMap.get(activity); // 이모지 가져오기
-            ActivityHappinessResponseDto activityDto = ReportConverter.toActivityHappinessResponseDto(i + 1, activity, emoji);
+            ActivityRankingResponseDto activityDto = ReportConverter.toActivityRankingResponseDto(i + 1, activity, emoji);
             activityRankings.add(activityDto);
         }
 

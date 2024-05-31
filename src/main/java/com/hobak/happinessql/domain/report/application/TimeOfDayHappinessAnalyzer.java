@@ -3,7 +3,7 @@ package com.hobak.happinessql.domain.report.application;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
 import com.hobak.happinessql.domain.report.domain.TimeOfDay;
-import com.hobak.happinessql.domain.report.dto.TimeOfDayHappinessResponseDto;
+import com.hobak.happinessql.domain.report.dto.TimeOfDayRankingResponseDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,8 +39,8 @@ public class TimeOfDayHappinessAnalyzer {
         }
     }
 
-    public static List<TimeOfDayHappinessResponseDto> getTimeOfDayRankings(List<Record> records) {
-        List<TimeOfDayHappinessResponseDto> timeOfDayRankings = new ArrayList<>();
+    public static List<TimeOfDayRankingResponseDto> getTimeOfDayRankings(List<Record> records) {
+        List<TimeOfDayRankingResponseDto> timeOfDayRankings = new ArrayList<>();
 
         // 시간대별 평균 행복도와 빈도 계산
         Map<TimeOfDay, List<Record>> timeOfDayRecordsMap = groupRecordsByTimeOfDay(records);
@@ -53,7 +53,7 @@ public class TimeOfDayHappinessAnalyzer {
         // 상위 N개의 시간대 선정
         for (int i = 0; i < sortedTimesOfDay.size(); i++) {
             TimeOfDay timeOfDay = sortedTimesOfDay.get(i);
-            TimeOfDayHappinessResponseDto timeOfDayDto = ReportConverter.toTimeOfDayHappinessResponseDto(i + 1, timeOfDay);
+            TimeOfDayRankingResponseDto timeOfDayDto = ReportConverter.toTimeOfDayRankingResponseDto(i + 1, timeOfDay);
             timeOfDayRankings.add(timeOfDayDto);
         }
 

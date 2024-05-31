@@ -7,36 +7,38 @@ import com.hobak.happinessql.domain.report.dto.*;
 import java.util.ArrayList;
 
 public class ReportConverter {
-    public static ReportSummaryResponseDto toReportSummaryResponseDto(TimeOfDay timeOfDay, String location, String activity) {
-        return ReportSummaryResponseDto.builder()
+    public static SummaryResponseDto toSummaryResponseDto(TimeOfDay timeOfDay, String location, String activity) {
+        return SummaryResponseDto.builder()
                 .activity(activity)
                 .location(location)
                 .timeOfDay(timeOfDay)
                 .build();
     }
 
-    public static ActivityHappinessResponseDto toActivityHappinessResponseDto(int ranking, String activity, String emoji) {
-        return ActivityHappinessResponseDto.builder()
+    public static ActivityRankingResponseDto toActivityRankingResponseDto(int ranking, String activity, String emoji) {
+        return ActivityRankingResponseDto.builder()
                 .ranking(ranking)
                 .activity(activity)
                 .emoji(emoji)
                 .build();
     }
 
-    public static LocationHappinessResponseDto toLocationHappinessResponseDto(int ranking, String location) {
-        return LocationHappinessResponseDto.builder()
+    public static LocationRankingResponseDto toLocationRankingResponseDto(int ranking, String location) {
+        return LocationRankingResponseDto.builder()
                 .ranking(ranking)
                 .location(location)
                 .build();
     }
+
     public static ReportGraphResponseDto toReportGraphResponseDto(ArrayList<String> labels, ArrayList<Double> happiness){
         return ReportGraphResponseDto.builder()
                 .labels(labels)
                 .happiness(happiness)
                 .build();
     }
-    public static TimeOfDayHappinessResponseDto toTimeOfDayHappinessResponseDto(int ranking, TimeOfDay timeOfDay) {
-        return TimeOfDayHappinessResponseDto.builder()
+
+    public static TimeOfDayRankingResponseDto toTimeOfDayRankingResponseDto(int ranking, TimeOfDay timeOfDay) {
+        return TimeOfDayRankingResponseDto.builder()
                 .ranking(ranking)
                 .timeOfDay(timeOfDay)
                 .build();

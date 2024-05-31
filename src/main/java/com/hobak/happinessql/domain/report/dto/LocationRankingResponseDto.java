@@ -5,12 +5,12 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LocationHappinessResponseDto {
+public class LocationRankingResponseDto {
     private int ranking;
     private String location;
 
     @Builder
-    public LocationHappinessResponseDto(int ranking, String location) {
+    public LocationRankingResponseDto(int ranking, String location) {
         this.ranking = ranking;
         this.location = location;
     }
