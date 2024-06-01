@@ -1,14 +1,8 @@
 package com.hobak.happinessql.domain.report.api;
 
-import com.hobak.happinessql.domain.report.application.AverageHappinessService;
-import com.hobak.happinessql.domain.report.application.TrendPopularActivityService;
-import com.hobak.happinessql.domain.report.application.TrendRecommendService;
-import com.hobak.happinessql.domain.report.application.TrendSummaryService;
+import com.hobak.happinessql.domain.report.application.*;
 import com.hobak.happinessql.domain.report.domain.AgeGroup;
-import com.hobak.happinessql.domain.report.dto.AverageHappinessResponseDto;
-import com.hobak.happinessql.domain.report.dto.SummaryResponseDto;
-import com.hobak.happinessql.domain.report.dto.TrendPopularActivitiyResponseDto;
-import com.hobak.happinessql.domain.report.dto.TrendRecommendActivityResponseDto;
+import com.hobak.happinessql.domain.report.dto.*;
 import com.hobak.happinessql.domain.user.application.UserFindService;
 import com.hobak.happinessql.domain.user.domain.Gender;
 import com.hobak.happinessql.domain.user.domain.User;
@@ -36,6 +30,7 @@ public class TrendController {
     private final TrendPopularActivityService trendPopularActivityService;
     private final TrendRecommendService trendRecommendService;
     private final TrendSummaryService trendSummaryService;
+    private final TrendLocationRankingService trendLocationRankingService;
 
     @Operation(summary = "대한민국 평균 행복지수", description = "전체 유저의 평균 행복지수와 그에 따른 수준을 판단합니다.")
     @GetMapping("/happiness")
@@ -67,5 +62,13 @@ public class TrendController {
         SummaryResponseDto responseDto = trendSummaryService.getSummary(ageGroup, gender);
         if(responseDto == null) return DataResponseDto.of("아직은 데이터가 없어요.", "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
         return DataResponseDto.of(responseDto, "행복 트렌드의 행복 종합 리포트를 성공적으로 조회했습니다.");
+    }
+
+    @Operation(summary = "행복도가 높은 장소와 활동 Top3", description = "전체 유저가 행복했던 장소 Top 3의 이름, 위치, 그 장소에서 가장 행복도가 높았던 활동을 조회합니다.")
+    @GetMapping("/top-locations")
+    public DataResponseDto<List<LocationActivityRankingResponseDto>> getTop3HappiestLocations(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userFindService.findByUserDetails(userDetails);
+        List<LocationActivityRankingResponseDto> responseDto = trendLocationRankingService.getTop3HappyLocationsWithActivities(user);
+        return DataResponseDto.of(responseDto, "행복도가 높은 장소와 활동 Top3를 성공적으로 조회했습니다.");
     }
 }

@@ -1,5 +1,6 @@
 package com.hobak.happinessql.domain.report.converter;
 
+import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.report.domain.HappinessLevel;
 import com.hobak.happinessql.domain.report.domain.TimeOfDay;
 import com.hobak.happinessql.domain.report.dto.*;
@@ -28,6 +29,17 @@ public class ReportConverter {
                 .ranking(ranking)
                 .location(location)
                 .build();
+    }
+
+    public static LocationActivityRankingResponseDto toLocationActivityRankingResponseDto(int ranking, Location location, String happinesActivity) {
+        return LocationActivityRankingResponseDto.builder()
+                .ranking(ranking)
+                .location(location != null ? location.getCity() + " " + location.getDistrict() : null)
+                .latitude(location != null ? location.getLatitude() : null)
+                .longitude(location != null ? location.getLongitude() : null)
+                .happiestActivity(happinesActivity)
+                .build();
+
     }
 
     public static ReportGraphResponseDto toReportGraphResponseDto(ArrayList<String> labels, ArrayList<Double> happiness){

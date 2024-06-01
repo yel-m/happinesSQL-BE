@@ -1,7 +1,9 @@
 package com.hobak.happinessql.domain.report.application;
 
+import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.report.converter.ReportConverter;
+import com.hobak.happinessql.domain.report.dto.LocationActivityRankingResponseDto;
 import com.hobak.happinessql.domain.report.dto.LocationRankingResponseDto;
 
 import java.util.*;
@@ -15,6 +17,7 @@ public class LocationHappinessAnalyzer {
         }
 
         // 도시와 구를 기준으로 Record 그룹화
+        // TODO : 나중에 주석 삭제 및 랜덤 돌리는 로직 메서드로 추출해서 Ranking 관련 메서드에도 추가
         Map<String, List<Record>> locationRecordsMap = groupRecordsByLocation(records);
 
         // 위치별 평균 행복도와 빈도 계산
@@ -82,6 +85,51 @@ public class LocationHappinessAnalyzer {
         return locationRankings;
     }
 
+    public static List<LocationActivityRankingResponseDto> getLocationActivityRankings(List<Record> records, int topCount) {
+        List<LocationActivityRankingResponseDto> locationActivityRankings = new ArrayList<>();
+        if(records == null || records.isEmpty()) {
+            for(int i = 0; i < topCount; i++) {
+                locationActivityRankings.add(ReportConverter.toLocationActivityRankingResponseDto(i + 1, null, null));
+            }
+            return locationActivityRankings;
+        }
+
+        Map<String, List<Record>> locationRecordsMap = groupRecordsByLocation(records);
+
+        Map<String, Double> locationAverageHappiness = calculateLocationAverageHappiness(locationRecordsMap);
+        Map<String, Integer> locationFrequency = calculateLocationFrequency(locationRecordsMap);
+
+        List<String> sortedLocations = sortLocations(locationAverageHappiness, locationFrequency);
+
+        for(int i = 0; i < sortedLocations.size(); i++) {
+            String locationStr = sortedLocations.get(i);
+            List<Record> locationRecords = locationRecordsMap.get(locationStr);
+
+            Record happiestRecord = locationRecords.stream()
+                    .max(Comparator.comparingInt(Record::getHappiness))
+                    .orElse(null);
+
+            Location location = happiestRecord != null ? happiestRecord.getLocation() : null;
+            String happiesActivity = happiestRecord != null ? happiestRecord.getActivity().getName() : null;
+
+            LocationActivityRankingResponseDto dto = ReportConverter.toLocationActivityRankingResponseDto(
+                    i+1,
+                    location,
+                    happiesActivity
+            );
+            locationActivityRankings.add(dto);
+        }
+
+        while(locationActivityRankings.size() < topCount) {
+            locationActivityRankings.add(ReportConverter.toLocationActivityRankingResponseDto(locationActivityRankings.size() + 1, null, null));
+        }
+
+        return locationActivityRankings.stream()
+                .limit(topCount)
+                .collect(Collectors.toList());
+
+    }
+
     private static Map<String, List<Record>> groupRecordsByLocation(List<Record> records) {
         return records.stream()
                 .filter(record -> record.getLocation() != null)
@@ -145,5 +193,4 @@ public class LocationHappinessAnalyzer {
                 .map(Map.Entry::getKey)
                 .toList();
     }
-
 }
