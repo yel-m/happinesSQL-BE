@@ -17,6 +17,7 @@ public class LocationHappinessAnalyzer {
         }
 
         // 도시와 구를 기준으로 Record 그룹화
+        // TODO : 나중에 주석 삭제 및 랜덤 돌리는 로직 메서드로 추출해서 Ranking 관련 메서드에도 추가
         Map<String, List<Record>> locationRecordsMap = groupRecordsByLocation(records);
 
         // 위치별 평균 행복도와 빈도 계산
