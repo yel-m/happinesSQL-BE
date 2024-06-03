@@ -43,7 +43,7 @@ public class AverageHappinessService {
         return ReportConverter.toAverageHappinessResponseDto(averageHappiness,level,level.getEmoji());    }
     public AverageHappinessResponseDto getMonthlyHappiness(User user) {
         LocalDateTime startOfMonth = LocalDateTime.of(currentYear, currentMonth, 1, 0, 0);
-        LocalDateTime endOfMonth = LocalDateTime.of(currentYear, currentMonth, 31, 23, 59, 59);
+        LocalDateTime endOfMonth = LocalDateTime.of(currentYear, currentMonth, currentDate.lengthOfMonth(), 23, 59, 59);
         double totalHappiness = recordRepository.findAllByCreatedAtBetweenAndUser(startOfMonth, endOfMonth, user).stream().mapToInt(Record::getHappiness).sum();
         double averageHappiness = totalHappiness / recordRepository.countAllByCreatedAtBetweenAndUser(startOfMonth, endOfMonth, user);
         averageHappiness = Math.round(averageHappiness * 100.0) / 100.0;
