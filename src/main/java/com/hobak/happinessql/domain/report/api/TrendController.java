@@ -66,9 +66,8 @@ public class TrendController {
 
     @Operation(summary = "행복도가 높은 장소와 활동 Top3", description = "전체 유저가 행복했던 장소 Top 3의 이름, 위치, 그 장소에서 가장 행복도가 높았던 활동을 조회합니다.")
     @GetMapping("/top-locations")
-    public DataResponseDto<List<LocationActivityRankingResponseDto>> getTop3HappiestLocations(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userFindService.findByUserDetails(userDetails);
-        List<LocationActivityRankingResponseDto> responseDto = trendLocationRankingService.getTop3HappyLocationsWithActivities(user);
+    public DataResponseDto<List<LocationActivityRankingResponseDto>> getTop3HappiestLocations() {
+        List<LocationActivityRankingResponseDto> responseDto = trendLocationRankingService.getTop3HappyLocationsWithActivities();
         return DataResponseDto.of(responseDto, "행복도가 높은 장소와 활동 Top3를 성공적으로 조회했습니다.");
     }
 }
