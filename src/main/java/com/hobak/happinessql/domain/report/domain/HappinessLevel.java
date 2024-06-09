@@ -10,7 +10,8 @@ public enum HappinessLevel {
     LOW("낮음","😐"),
     MEDIUM("보통","😐"),
     HIGH("높음", "🙂"),
-    VERY_HIGH("매우 높음", "😄");
+    VERY_HIGH("매우 높음", "😄"),
+    NONE(null, null);
     private final String viewName;
 
     @Getter
@@ -24,8 +25,11 @@ public enum HappinessLevel {
             return MEDIUM;
         } else if (happiness >= 5 && happiness < 6) {
             return HIGH;
-        } else {
+        } else if(happiness >=6 && happiness <=7){
             return VERY_HIGH;
+        }
+        else{
+            return NONE;
         }
     }
     @JsonValue
