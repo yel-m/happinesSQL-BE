@@ -14,7 +14,8 @@ HappinesSQL은 사용자의 일상 활동, 기분, 위치 등을 기반으로 �
 
 ## ⚒️ System Architecture
 
-![image](https://github.com/Happy-HOBAK/happinesSQL-BE/assets/101961939/82673fff-55ba-423c-87ab-d80cfaa97a78)
+![image](https://github.com/Happy-HOBAK/happinesSQL-BE/assets/101961939/7c9c3e5b-854e-455a-be86-9f592cdc4dc7)
+
 
 
 ## 🏛 Information Architecture
