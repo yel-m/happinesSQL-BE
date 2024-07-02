@@ -79,5 +79,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     public void updateUserProfile(UserProfileUpdateRequestDto requestDto) {
         this.gender = requestDto.getGender();
         this.age = requestDto.getAge();
+        this.name = requestDto.getName();
     }
 }
