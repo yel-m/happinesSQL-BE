@@ -15,5 +15,7 @@ public class UserProfileUpdateRequestDto {
     @Min(1)
     private int age;
 
+    private String name;
+
 }
 
