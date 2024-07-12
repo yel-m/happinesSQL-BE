@@ -41,6 +41,9 @@ public class Record extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToOne(mappedBy = "record", fetch = FetchType.LAZY)
+    private Analysis analysis;
+
     @Builder
     public Record(Integer happiness, String memo, User user, Activity activity) {
         this.happiness = happiness;
