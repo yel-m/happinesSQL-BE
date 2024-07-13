@@ -19,6 +19,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -43,6 +44,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Gson 라이브러리로 Json 파싱
+    implementation 'org.jsoup:jsoup:1.14.2'
+    implementation 'com.google.code.gson:gson:2.8.7'
 }
 
 tasks.named('test') {

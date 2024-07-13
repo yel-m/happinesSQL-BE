@@ -41,3 +41,7 @@ cloud:
       auto: false
 jwt:
   secret: ${JWT_SECRET_KEY}
+
+sentiment:
+  clientId: ${NAVER_CLIENT_ID}
+  clientSecret: ${NAVER_CLIENT_SECRET}

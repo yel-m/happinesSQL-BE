@@ -4,10 +4,12 @@ import com.hobak.happinessql.domain.activity.domain.Activity;
 import com.hobak.happinessql.domain.activity.exception.ActivityNotFoundException;
 import com.hobak.happinessql.domain.activity.repository.ActivityRepository;
 import com.hobak.happinessql.domain.record.converter.RecordConverter;
+import com.hobak.happinessql.domain.record.domain.Analysis;
 import com.hobak.happinessql.domain.record.domain.Location;
 import com.hobak.happinessql.domain.record.domain.Record;
 import com.hobak.happinessql.domain.record.domain.RecordImg;
 import com.hobak.happinessql.domain.record.dto.RecordCreateRequestDto;
+import com.hobak.happinessql.domain.record.repository.AnalysisRepository;
 import com.hobak.happinessql.domain.record.repository.LocationRepository;
 import com.hobak.happinessql.domain.record.repository.RecordImgRepository;
 import com.hobak.happinessql.domain.record.repository.RecordRepository;
@@ -18,6 +20,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +35,8 @@ public class RecordCreateService {
 
     private final AwsS3Service awsS3Service;
     private final UserFindService userFindService;
+    private final AnalysisRepository analysisRepository;
+    private final SentimentAnalyzeService sentimentAnalyzeService;
 
 
     @Transactional
@@ -53,6 +60,16 @@ public class RecordCreateService {
                     .record(newRecord)
                     .build();
             recordImgRepository.save(recordImg);
+        }
+        if (requestDto.getMemo() != null && !requestDto.getMemo().isEmpty()) {
+            Map<String, List<String>> analyzeResult = sentimentAnalyzeService.getAnalyzeResult(requestDto.getMemo());
+            Analysis analysis = Analysis.builder()
+                    .record(newRecord)
+                    .positiveSentiments(analyzeResult.get("positive"))
+                    .negativeSentiments(analyzeResult.get("negative"))
+                    .build();
+
+            analysisRepository.save(analysis);
         }
 
         return newRecord.getRecordId();
